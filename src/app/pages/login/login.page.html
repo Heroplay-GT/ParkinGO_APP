@@ -1,0 +1,39 @@
+<ion-content class="login-page">
+  <div class="bg-gradient">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <img src="assets/logo.png" alt="ParkinGO logo" (error)="onLogoError()" (load)="onLogoLoad()" *ngIf="logoExists">
+        <span class="logo-initials" *ngIf="!logoExists">Pa</span>
+      </div>
+      <h1>ParkinGO</h1>
+      <p>Conecta con lugares disponibles</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+
+      <app-input
+        icon="mail-outline"
+        placeholder="Correo electrónico"
+        [value]="loginForm.get('email')?.value"
+        (valueChange)="loginForm.get('email')?.setValue($event)">
+      </app-input>
+
+      <app-input
+        icon="lock-closed-outline"
+        type="password"
+        placeholder="Contraseña"
+        [value]="loginForm.get('password')?.value"
+        (valueChange)="loginForm.get('password')?.setValue($event)">
+      </app-input>
+
+      <app-button [expand]="'block'" class="login-button" (btnClick)="onSubmit()">Iniciar Sesión</app-button>
+
+      <div class="register-cta">
+        <p>¿No tienes cuenta?</p>
+        <app-link text="Regístrate" (linkClick)="goToRegister()"></app-link>
+      </div>
+
+      <p class="terms">Al iniciar sesión aceptas nuestros <strong>Términos y Condiciones</strong></p>
+    </form>
+  </div>
+</ion-content>

@@ -1,0 +1,43 @@
+.app-input {
+  --background: var(--input-bg);
+  border-radius: 10px;
+  /* keep a minimal container padding and remove ionic inner start padding */
+  padding-left: 4px;
+  /* prevent ion-item from reserving extra start padding for slots */
+  --inner-padding-start: 0px;
+  --padding-start: 0px;
+  color: var(--text-on-bg);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* inline icon + input spacing control */
+.app-input ion-icon {
+  margin-left: 4px; /* small gap from left edge */
+  margin-right: 8px; /* gap between icon and text */
+  font-size: 20px;
+  color: var(--accent-teal);
+  vertical-align: middle;
+}
+
+.app-input ion-input {
+  --padding-start: 0;
+}
+
+.app-input ion-input input {
+  padding-left: 0; /* rely on item padding + icon margin */
+}
+
+
+/* Strong selectors to override Ionic's internal padding for ion-item across modes */
+:host ::ng-deep .app-input .item-inner,
+:host ::ng-deep .app-input .item-native,
+:host ::ng-deep .app-input .native-input,
+:host ::ng-deep .app-input .item-native-ios,
+:host ::ng-deep .app-input .item-native-md {
+  padding-left: 0 !important;
+}
+
+/* Fallback for shadow DOM parts (some Ionic versions expose part names) */
+:host ::ng-deep .app-input::part(native) {
+  padding-inline-start: 0 !important;
+}

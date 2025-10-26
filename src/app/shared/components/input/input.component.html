@@ -1,0 +1,5 @@
+<ion-item class="app-input">
+  <!-- remove slot to avoid ion-item adding extra start padding; place icon inline -->
+  <ion-icon *ngIf="icon" [name]="icon"></ion-icon>
+  <ion-input [type]="type" [placeholder]="placeholder" [value]="value" (ionInput)="onInput($event)"></ion-input>
+</ion-item>

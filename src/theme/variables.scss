@@ -1,2 +1,29 @@
+// Paleta global para ParkinGO
+// Basada en las imágenes proporcionadas: fondo degradado rosa→naranja y botones morado/rosa
+// También se incluyen colores secundarios (verde/teal) para pantallas de mapas si se usan posteriormente.
+
+:root {
+	/* Dark theme base colors for ParkinGO */
+	--bg-base: #061018;        /* deep almost-black blue */
+	--surface: #0b1414;        /* card / surface */
+	--bg-grad-start: #061018;  /* kept for compatibility */
+	--bg-grad-mid: #07171a;
+	--bg-grad-end: #081a1b;
+
+	/* Primary button / accent (teal/green) */
+	--btn-grad-start: #00e5a8; /* bright teal */
+	--btn-grad-end: #00cba0;   /* darker teal */
+
+	/* Accent / action color */
+	--accent-teal: #00e5a8;
+
+	/* Text colors */
+	--text-on-primary: #042b24; /* dark text on bright buttons */
+	--text-on-bg: #e6f7f2;      /* light text on dark backgrounds */
+
+	/* Input background (dark card) */
+	--input-bg: rgba(255,255,255,0.03);
+}
+
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/

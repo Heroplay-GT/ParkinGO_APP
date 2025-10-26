@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <div class="title-wrap">
+        <div *ngIf="showLogo" class="logo">
+          <img *ngIf="logoSrc; else letter" [src]="logoSrc" alt="logo" />
+          <ng-template #letter>P</ng-template>
+        </div>
+        <div class="texts">
+          <div class="main">{{ title }}</div>
+          <div class="sub">{{ subtitle }}</div>
+        </div>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>

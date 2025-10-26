@@ -1,0 +1,26 @@
+.title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, var(--btn-grad-start), var(--btn-grad-end));
+  color: #02221b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
+.texts .main {
+  font-weight: 700;
+}
+
+.texts .sub {
+  font-size: 12px;
+  opacity: 0.85;
+}
