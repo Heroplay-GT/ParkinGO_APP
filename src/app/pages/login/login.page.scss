@@ -1,106 +1,144 @@
 .login-page {
-  --ion-background-color: transparent;
-  .bg-gradient {
-  min-height: 100vh;
+  --background: #0b1416;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #eaeaea;
+  font-family: 'Poppins', sans-serif;
+}
+
+.bg-gradient {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 25px;
+  border-radius: 16px;
+  background: radial-gradient(circle at 30% 20%, #0f2027, #091416);
+  box-shadow: 0 0 25px rgba(0, 255, 198, 0.08);
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* ---------- BRAND ---------- */
+.brand {
+  margin-bottom: 40px;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  background: #0f2922;
+  color: #00ffc6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1.6rem;
+  box-shadow: 0 0 15px rgba(0, 255, 198, 0.3);
+  overflow: hidden;
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logo-initials {
+  letter-spacing: 1px;
+}
+
+.brand h1 {
+  color: #ffffff;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.brand p {
+  color: #a0a0a0;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* ---------- FORM ---------- */
+.login-form {
   display: flex;
   flex-direction: column;
+  gap: 20px;
+}
+
+app-input {
+  --background: rgba(255, 255, 255, 0.08);
+  --color: #eaeaea;
+  border-radius: 12px;
+  padding: 5px;
+}
+
+.login-button {
+  margin-top: 10px;
+  --background: linear-gradient(90deg, #00ffc6, #00bfa5);
+  --background-hover: linear-gradient(90deg, #00e0b0, #00a88f);
+  color: #0b1416;
+  font-weight: 600;
+  border-radius: 30px;
+  box-shadow: 0 0 15px rgba(0, 255, 198, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 255, 198, 0.35);
+}
+
+/* ---------- REGISTER CTA ---------- */
+.register-cta {
+  display: flex;
+  justify-content: center;
   align-items: center;
-  padding: 48px 24px;
-  background: linear-gradient(135deg, var(--bg-base) 0%, var(--surface) 70%);
+  gap: 5px;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.register-cta p {
+  color: #b3b3b3;
+}
+
+app-link {
+  color: #00ffc6;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+app-link:hover {
+  color: #00bfa5;
+}
+
+/* ---------- TERMS ---------- */
+.terms {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 25px;
+  line-height: 1.4;
+}
+
+.terms strong {
+  color: #00ffc6;
+}
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
 
-  .brand {
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 28px;
-  }
-
-  .brand .logo {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 8px;
-    overflow: hidden;
-    /* decorative dark circular background as fallback */
-    background-color: rgba(255,255,255,0.03);
-    box-shadow: inset 0 2px 6px rgba(0,0,0,0.6);
-    /* background-image: logo on top, sized and centered */
-    background-image: url('/assets/logo.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 62% 62%;
-  }
-
-  .brand .logo img {
-    width: 62%;
-    height: 62%;
-    object-fit: contain;
-    display: block;
-  }
-
-  .brand .logo-initials {
-    position: absolute;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    color: var(--text-on-bg);
-    font-weight: 800;
-    font-size: 26px;
-    letter-spacing: 0.5px;
-  }
-
-  .brand h1 {
-    color: var(--text-on-bg);
-    margin: 0;
-    font-size: 36px;
-    font-weight: 700;
-  }
-
-  .brand p {
-    color: rgba(230,247,242,0.85);
-    margin-top: 6px;
-  }
-
-  .login-form {
-    width: 100%;
-    max-width: 420px;
-    margin-top: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .input-item {
-    --background: var(--input-bg);
-    border-radius: 12px;
-    padding-left: 12px;
-    ion-icon { color: var(--accent-teal); }
-  }
-
-  .login-button {
-    --border-radius: 20px;
-    --box-shadow: 0 8px 18px rgba(0,0,0,0.32);
-    color: var(--text-on-primary);
-    font-weight: 700;
-    height: 56px;
-  }
-
-  .register-cta {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .terms {
-    margin-top: 12px;
-    color: rgba(255,255,255,0.9);
-    text-align: center;
-    font-size: 13px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
