@@ -1,0 +1,51 @@
+.admin-submenu {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 520px;
+  background: rgba(11,20,22,0.64);
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.45), 0 0 18px rgba(0,229,168,0.04);
+  z-index: 1100;
+  padding: 8px 10px;
+}
+
+.admin-submenu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-submenu li { flex: 1 1 auto; text-align: center; }
+
+.admin-submenu button {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text-on-bg);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.admin-submenu button ion-icon { font-size: 20px; color: var(--accent-teal); }
+.admin-submenu button span { font-size: 12px; color: rgba(230,247,242,0.9); }
+
+.admin-submenu button:hover { background: rgba(0,229,168,0.04); }
+.admin-submenu button.logout { background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); }
+
+@media (max-width: 420px) {
+  .admin-submenu { width: calc(100% - 12px); bottom: 10px; }
+  .admin-submenu button span { display: none; }
+  .admin-submenu button ion-icon { font-size: 22px; }
+}

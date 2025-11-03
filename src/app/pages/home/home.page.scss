@@ -27,16 +27,19 @@ ion-toolbar {
 .logo-circle {
   width: 70px;
   height: 70px;
-  background: #0f2922;
-  color: #00ffc6;
+  background: transparent;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto 20px;
-  font-size: 1.5rem;
-  font-weight: 700;
   box-shadow: 0 0 12px rgba(0, 255, 150, 0.3);
+}
+
+.logo-circle svg {
+  width: 85%;
+  height: 85%;
+  display: block;
 }
 
 .hero h1 {
