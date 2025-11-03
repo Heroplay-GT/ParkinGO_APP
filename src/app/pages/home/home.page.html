@@ -17,34 +17,51 @@
   <section class="hero">
     <div class="hero-content">
       <div class="logo-circle">
-        <span>Pa</span>
+        <svg width="60" height="60" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background circle -->
+          <circle cx="60" cy="60" r="60" fill="url(#logoGradient)"/>
+          
+          <!-- Pin shape -->
+          <path d="M60 25C47.85 25 38 34.85 38 47C38 64.5 60 95 60 95S82 64.5 82 47C82 34.85 72.15 25 60 25ZM60 57C54.48 57 50 52.52 50 47C50 41.48 54.48 37 60 37C65.52 37 70 41.48 70 47C70 52.52 65.52 57 60 57Z" fill="#0b1416"/>
+          
+          <!-- Inner circle -->
+          <circle cx="60" cy="47" r="8" fill="#0b1416"/>
+          
+          <!-- Gradient definition -->
+          <defs>
+            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#00ffc6;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#00bfa5;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+        </svg>
       </div>
 
-      <h1>ParkinGO</h1>
-      <p>Conecta con lugares disponibles</p>
+  <h1>ParkinGO</h1>
+  <p>Connect with available parking spots</p>
 
       <div class="features">
         <div class="feature-item">
           <ion-icon name="time-outline"></ion-icon>
-          <h3>Ahorra Tiempo</h3>
-          <p>Gestión rápida de entradas y salidas</p>
+          <h3>Save Time</h3>
+          <p>Fast entry and exit management</p>
         </div>
 
         <div class="feature-item">
           <ion-icon name="shield-checkmark-outline"></ion-icon>
-          <h3>Mayor Seguridad</h3>
-          <p>Control total de vehículos las 24/7</p>
+          <h3>Increased Security</h3>
+          <p>24/7 vehicle monitoring and control</p>
         </div>
 
         <div class="feature-item">
           <ion-icon name="stats-chart-outline"></ion-icon>
-          <h3>Reportes Detallados</h3>
-          <p>Estadísticas en tiempo real</p>
+          <h3>Detailed Reports</h3>
+          <p>Real-time analytics and insights</p>
         </div>
       </div>
 
       <ion-button expand="block" shape="round" color="success" routerLink="/login" class="main-btn">
-        EMPEZAR AHORA
+        GET STARTED
       </ion-button>
     </div>
   </section>
