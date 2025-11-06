@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Auth } from 'src/app/core/providers/auth/auth';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +13,9 @@ export class RegisterPage implements OnInit {
   registerForm!: FormGroup;
   logoExists: boolean = true;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private readonly authSrv: Auth) {
+
+  }
 
   ngOnInit() {
     this.registerForm = new FormGroup({
@@ -31,7 +34,7 @@ export class RegisterPage implements OnInit {
     this.logoExists = true;
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.registerForm.invalid) return;
 
     const { password, confirmPassword } = this.registerForm.value;
@@ -40,8 +43,8 @@ export class RegisterPage implements OnInit {
       return;
     }
 
-    // Here you can later implement real registration logic
-    console.log('Registered user:', this.registerForm.value);
+    await this.authSrv.register(this.registerForm.value.email, this.registerForm.value.password);
+
     this.router.navigate(['/login']);
   }
 

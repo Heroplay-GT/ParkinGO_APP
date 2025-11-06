@@ -1,0 +1,16 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>index</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">admin</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- admin submenu (bottom) -->
+  <app-admin-submenu (navigate)="onNav($event)"></app-admin-submenu>
+</ion-content>

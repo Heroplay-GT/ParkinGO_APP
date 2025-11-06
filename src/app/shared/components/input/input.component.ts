@@ -14,8 +14,14 @@ export class InputComponent {
 
   @Output() valueChange = new EventEmitter<string>();
 
+  showPassword: boolean = false;
+
   onInput(event: any) {
-    const v = event?.detail?.value ?? event?.target?.value ?? '';
-    this.valueChange.emit(v);
+    const value = event?.detail?.value ?? event?.target?.value ?? '';
+    this.valueChange.emit(value);
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 }

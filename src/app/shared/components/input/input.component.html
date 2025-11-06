@@ -1,5 +1,18 @@
 <ion-item class="app-input">
-  <!-- remove slot to avoid ion-item adding extra start padding; place icon inline -->
   <ion-icon *ngIf="icon" [name]="icon"></ion-icon>
-  <ion-input [type]="type" [placeholder]="placeholder" [value]="value" (ionInput)="onInput($event)"></ion-input>
+
+  <ion-input
+    [type]="showPassword ? 'text' : type"
+    [placeholder]="placeholder"
+    [value]="value"
+    (ionInput)="onInput($event)">
+  </ion-input>
+
+  <!-- Custom toggle button -->
+  <ion-icon
+    *ngIf="type === 'password'"
+    [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"
+    class="password-toggle"
+    (click)="togglePassword()">
+  </ion-icon>
 </ion-item>

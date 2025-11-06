@@ -31,3 +31,30 @@ ion-input {
   font-family: 'Poppins', sans-serif;
   font-size: 0.95rem;
 }
+
+ion-input-password-toggle {
+  --color: #00ffc6;
+  --color-activated: #00ffc6;
+  --color-focused: #00ffc6;
+  --color-hover: #00e0b0;
+  font-size: 1.2rem;
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+ion-input-password-toggle:hover {
+  transform: scale(1.15);
+  color: #00e0b0;
+}
+
+.password-toggle {
+  color: #00ffc6;
+  font-size: 1.4rem;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.password-toggle:hover {
+  transform: scale(1.15);
+  color: #00e0b0;
+}

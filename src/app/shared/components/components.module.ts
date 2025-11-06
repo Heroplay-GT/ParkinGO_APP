@@ -8,16 +8,30 @@ import { HeaderComponent } from './header/header.component';
 import { InputComponent } from './input/input.component';
 import { LinkComponent } from './link/link.component';
 import { AdminSubmenuComponent } from './admin-submenu/admin-submenu.component';
+import { SubmenuComponent } from './submenu/submenu.component';
 
 @NgModule({
   declarations: [
     ButtonComponent,
     HeaderComponent,
     InputComponent,
-    LinkComponent
-    ,AdminSubmenuComponent
+    LinkComponent,
+    AdminSubmenuComponent,
+    SubmenuComponent
   ],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, IonicModule],
-  exports: [ButtonComponent, HeaderComponent, InputComponent, LinkComponent, AdminSubmenuComponent]
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    IonicModule
+  ],
+  exports: [
+    ButtonComponent,
+    HeaderComponent,
+    InputComponent,
+    LinkComponent,
+    AdminSubmenuComponent,
+    SubmenuComponent
+  ]
 })
 export class ComponentsModule {}

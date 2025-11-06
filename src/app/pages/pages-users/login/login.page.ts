@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Auth } from 'src/app/core/providers/auth/auth';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ export class LoginPage implements OnInit {
   errorMessage: string = '';
   logoExists: boolean = true;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private readonly authSrv: Auth) {}
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -30,13 +31,23 @@ export class LoginPage implements OnInit {
     this.logoExists = true;
   }
 
-  onSubmit() {
-    if (this.loginForm.invalid) return;
-    // Por ahora sólo navegamos a 'home' para simular login exitoso
-    this.router.navigate(['/home']);
+  async onSubmit() {
+
+    await this.authSrv.login(this.loginForm.value.email, this.loginForm.value.password);
+
+    this.router.navigate(['/index']);
   }
 
   goToRegister() {
     this.router.navigate(['/register']);
+  }
+
+  ionViewWillLeave() {
+    this.loginForm.reset();
+  }
+
+  async onGoogleLogin() {
+    await this.authSrv.loginWithGoogle();
+    this.router.navigate(['/index']);
   }
 }

@@ -5,13 +5,13 @@
         <svg width="60" height="60" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
           <!-- Background circle -->
           <circle cx="60" cy="60" r="60" fill="url(#logoGradient)"/>
-          
+
           <!-- Pin shape -->
           <path d="M60 25C47.85 25 38 34.85 38 47C38 64.5 60 95 60 95S82 64.5 82 47C82 34.85 72.15 25 60 25ZM60 57C54.48 57 50 52.52 50 47C50 41.48 54.48 37 60 37C65.52 37 70 41.48 70 47C70 52.52 65.52 57 60 57Z" fill="#0b1416"/>
-          
+
           <!-- Inner circle -->
           <circle cx="60" cy="47" r="8" fill="#0b1416"/>
-          
+
           <!-- Gradient definition -->
           <defs>
             <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -22,14 +22,14 @@
         </svg>
       </div>
       <h1>ParkinGO</h1>
-      <p>Conecta con lugares disponibles</p>
+      <p>Connect with available parking spots</p>
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
 
       <app-input
         icon="mail-outline"
-        placeholder="Correo electrónico"
+        placeholder="Email Address"
         [value]="loginForm.get('email')?.value"
         (valueChange)="loginForm.get('email')?.setValue($event)">
       </app-input>
@@ -37,19 +37,26 @@
       <app-input
         icon="lock-closed-outline"
         type="password"
-        placeholder="Contraseña"
+        placeholder="Password"
         [value]="loginForm.get('password')?.value"
         (valueChange)="loginForm.get('password')?.setValue($event)">
       </app-input>
 
-      <app-button [expand]="'block'" class="login-button" (btnClick)="onSubmit()">Iniciar Sesión</app-button>
+      <app-button [expand]="'block'" class="login-button" (btnClick)="onSubmit()">Log In</app-button>
+
+      <app-button [expand]="'block'" class="google-login-button" (btnClick)="onGoogleLogin()">
+        <div class="google-button-content">
+          <ion-icon name="logo-google" class="google-icon"></ion-icon>
+          <span class="google-text">Log in with Google</span>
+        </div>
+      </app-button>
 
       <div class="register-cta">
-        <p>¿No tienes cuenta?</p>
-        <app-link text="Regístrate" (linkClick)="goToRegister()"></app-link>
+        <p>Don’t have an account?</p>
+        <app-link text="Sign Up" (linkClick)="goToRegister()"></app-link>
       </div>
 
-      <p class="terms">Al iniciar sesión aceptas nuestros <strong>Términos y Condiciones</strong></p>
+      <p class="terms">By logging in, you agree to our <strong>Terms and Conditions</strong></p>
     </form>
   </div>
 </ion-content>
