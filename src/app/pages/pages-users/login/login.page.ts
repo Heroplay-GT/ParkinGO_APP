@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auth } from 'src/app/core/providers/auth/auth';
+import { Query } from 'src/app/core/providers/query/query';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,11 @@ export class LoginPage implements OnInit {
   errorMessage: string = '';
   logoExists: boolean = true;
 
-  constructor(private router: Router, private readonly authSrv: Auth) {}
+  constructor(
+    private router: Router,
+    private readonly authSrv: Auth,
+    private readonly querySrv: Query
+  ) { }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -32,6 +37,7 @@ export class LoginPage implements OnInit {
   }
 
   async onSubmit() {
+    if (this.loginForm.invalid) return;
 
     await this.authSrv.login(this.loginForm.value.email, this.loginForm.value.password);
 
@@ -48,6 +54,7 @@ export class LoginPage implements OnInit {
 
   async onGoogleLogin() {
     await this.authSrv.loginWithGoogle();
+
     this.router.navigate(['/index']);
   }
 }

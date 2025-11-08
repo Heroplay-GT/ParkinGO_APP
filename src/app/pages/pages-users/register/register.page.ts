@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auth } from 'src/app/core/providers/auth/auth';
+import { Query } from 'src/app/core/providers/query/query';
 
 @Component({
   selector: 'app-register',
@@ -13,7 +14,11 @@ export class RegisterPage implements OnInit {
   registerForm!: FormGroup;
   logoExists: boolean = true;
 
-  constructor(private router: Router, private readonly authSrv: Auth) {
+  constructor(
+    private router: Router,
+    private readonly authSrv: Auth,
+    private readonly querySrv: Query
+  ) {
 
   }
 
@@ -43,7 +48,14 @@ export class RegisterPage implements OnInit {
       return;
     }
 
-    await this.authSrv.register(this.registerForm.value.email, this.registerForm.value.password);
+    const uid = await this.authSrv.register(this.registerForm.value.email, this.registerForm.value.password);
+
+    await this.querySrv.create('users', {
+      name: this.registerForm.value.name,
+      email: this.registerForm.value.email,
+      uid,
+      role: 'user'
+    });
 
     this.router.navigate(['/login']);
   }

@@ -27,7 +27,7 @@ const routes: Routes = [
   },
   {
     path: 'admin',
-    loadChildren: () => import('./pages/admin/admin.module').then( m => m.AdminPageModule)
+    loadChildren: () => import('./pages/admin-pages/admin/admin.module').then( m => m.AdminPageModule)
   },
   {
     path: 'index',
@@ -36,10 +36,20 @@ const routes: Routes = [
     data: { authGuardPipe: isNotLogged }
   },
   {
+    path: 'admin-pages',
+    loadChildren: () => import('./pages/admin-pages/admin/admin.module').then( m => m.AdminPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/admin-pages/auth/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
   },
+
+
 
 
 
