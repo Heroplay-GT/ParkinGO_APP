@@ -36,18 +36,15 @@ const routes: Routes = [
     data: { authGuardPipe: isNotLogged }
   },
   {
-    path: 'admin-pages',
-    loadChildren: () => import('./pages/admin-pages/admin/admin.module').then( m => m.AdminPageModule)
-  },
-  {
-    path: 'login',
-    loadChildren: () => import('./pages/admin-pages/auth/login/login.module').then( m => m.LoginPageModule)
+    path: 'login-admin',
+    loadChildren: () => import('./pages/admin-pages/auth/login-admin/login-admin.module').then( m => m.LoginAdminPageModule)
   },
   {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
   },
+
 
 
 

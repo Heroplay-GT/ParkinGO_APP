@@ -34,7 +34,7 @@ export class AdminPage implements OnInit {
         break;
       case 'logout':
 
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login-admin']);
         break;
       default:
         console.log('Unknown nav:', route);
