@@ -1,3 +1,5 @@
+import { UserGuard } from './core/guards/user/user-guard';
+import { RoleGuard } from './core/guards/role/role-guard';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
@@ -19,21 +21,21 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./pages/pages-users/login/login.module').then(m => m.LoginPageModule)
+    loadChildren: () => import('./pages/pages-users/auth/login/login.module').then(m => m.LoginPageModule)
   },
   {
     path: 'register',
-    loadChildren: () => import('./pages/pages-users/register/register.module').then( m => m.RegisterPageModule)
+    loadChildren: () => import('./pages/pages-users/auth/register/register.module').then( m => m.RegisterPageModule)
   },
   {
     path: 'admin',
-    loadChildren: () => import('./pages/admin-pages/admin/admin.module').then( m => m.AdminPageModule)
+    loadChildren: () => import('./pages/admin-pages/admin/admin.module').then( m => m.AdminPageModule),
+    canActivate: [RoleGuard],
   },
   {
     path: 'index',
     loadChildren: () => import('./pages/pages-users/index/index.module').then( m => m.IndexPageModule),
-    canActivate: [AuthGuard],
-    data: { authGuardPipe: isNotLogged }
+    canActivate: [UserGuard]
   },
   {
     path: 'login-admin',
