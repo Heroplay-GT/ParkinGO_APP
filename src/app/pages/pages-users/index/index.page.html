@@ -8,7 +8,7 @@
       <p>View and manage your active bookings</p>
     </div>
 
-    <!-- No reservations -->
+    <!-- If user has no reservations -->
     <div *ngIf="!reservations || reservations.length === 0" class="empty-state">
       <ion-icon name="alert-circle-outline"></ion-icon>
       <p>No reservations found</p>
@@ -33,12 +33,26 @@
 
           <!-- Actions -->
           <div class="card-actions">
-            <ion-button color="primary" fill="outline" expand="block" size="small" (click)="openQR(res)">
+            <ion-button
+              color="primary"
+              fill="outline"
+              expand="block"
+              size="small"
+              (click)="openQR(res)"
+              [disabled]="res.status === 'cancelled' || res.status === 'expired'"
+            >
               <ion-icon name="qr-code-outline"></ion-icon>
               &nbsp; Show QR
             </ion-button>
 
-            <ion-button color="danger" fill="solid" expand="block" size="small" (click)="cancelReservation(res.id)">
+            <ion-button
+              color="danger"
+              fill="solid"
+              expand="block"
+              size="small"
+              (click)="cancelReservation(res.id)"
+              [disabled]="res.status === 'cancelled' || res.status === 'expired'"
+            >
               <ion-icon name="trash-outline"></ion-icon>
               &nbsp; Cancel
             </ion-button>
@@ -48,7 +62,7 @@
     </div>
   </div>
 
-  <!-- QR Modal -->
+  <!-- Modal QR -->
   <ion-modal [isOpen]="showQRModal" (didDismiss)="closeQR()">
     <ng-template>
       <ion-header translucent>

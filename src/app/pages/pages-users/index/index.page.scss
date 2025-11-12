@@ -169,3 +169,9 @@
 .expired {
   color: #999;
 }
+
+ion-button[disabled] {
+  opacity: 0.4;
+  pointer-events: none;
+  filter: grayscale(40%);
+}
