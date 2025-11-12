@@ -44,16 +44,14 @@ const routes: Routes = [
     canActivate: [UserGuard],
   },
   {
-    path: '',
-    redirectTo: 'home',
+    path: 'not-found',
+    loadChildren: () => import('./pages/not-found/not-found.module').then( m => m.NotFoundPageModule)
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found',
     pathMatch: 'full'
   },
-
-
-
-
-
-
 
 ];
 

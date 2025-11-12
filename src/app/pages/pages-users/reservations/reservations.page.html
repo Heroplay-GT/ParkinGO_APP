@@ -1,9 +1,3 @@
-<ion-header translucent="true">
-  <ion-toolbar color="primary">
-    <ion-title>Register Reservation</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="login-page">
   <div class="bg-gradient">
     <div class="brand">
@@ -17,49 +11,44 @@
     <form [formGroup]="reservaForm" (ngSubmit)="saveReservation()" class="login-form">
 
       <!-- Vehicle Type -->
-      <div class="input-box">
-        <select formControlName="vehicleType" (change)="updateType()" required>
-          <option value="">Select Vehicle Type...</option>
-          <option *ngFor="let type of vehicleTypes" [value]="type">
+      <ion-item lines="none" class="custom-item">
+        <ion-select formControlName="vehicleType" placeholder="Select Vehicle Type" interface="popover"
+          (ionChange)="updateType()">
+          <ion-select-option *ngFor="let type of vehicleTypes" [value]="type">
             {{ type }}
-          </option>
-        </select>
-      </div>
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
 
       <!-- Plate -->
-      <div class="input-box">
-        <input type="text" formControlName="plate" placeholder="License Plate" required />
-      </div>
+      <ion-item lines="none" class="custom-item">
+        <ion-input formControlName="plate" placeholder="License Plate" required></ion-input>
+      </ion-item>
 
       <!-- Vehicle Model -->
-      <div class="input-box">
-        <input type="text" formControlName="model" placeholder="Vehicle Model" required />
-      </div>
+      <ion-item lines="none" class="custom-item">
+        <ion-input formControlName="model" placeholder="Vehicle Model" required></ion-input>
+      </ion-item>
 
       <!-- Space to Use -->
-      <div class="input-box" *ngIf="availableSpaces.length > 0">
-        <select formControlName="space" (change)="onSelectSpace($event)" required>
-          <option value="">Select Space...</option>
-          <option *ngFor="let space of availableSpaces" [value]="space.code">
+      <ion-item lines="none" class="custom-item" *ngIf="availableSpaces.length > 0">
+        <ion-select formControlName="space" placeholder="Select Space" interface="popover"
+          (ionChange)="onSelectSpace($event)">
+          <ion-select-option *ngFor="let space of availableSpaces" [value]="space.id">
             {{ space.code }}
-          </option>
-        </select>
-      </div>
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
 
       <!-- Price (read-only) -->
-      <div class="input-box" *ngIf="pricePerHour > 0">
-        <input
-          type="text"
-          [value]="pricePerHour | currency:'COP'"
-          placeholder="Price per Hour"
-          readonly
-        />
-      </div>
+      <ion-item lines="none" class="custom-item" *ngIf="pricePerHour > 0">
+        <ion-input readonly [value]="pricePerHour | currency:'COP'" placeholder="Price per Hour"></ion-input>
+      </ion-item>
 
       <!-- Submit -->
-      <button type="submit" class="login-button" [disabled]="reservaForm.invalid">
+      <ion-button expand="block" class="login-button" type="submit" [disabled]="reservaForm.invalid">
         Register
-      </button>
+      </ion-button>
     </form>
   </div>
 

@@ -1,0 +1,23 @@
+<ion-content class="notfound-page" fullscreen>
+  <div class="bg-gradient">
+    <div class="brand">
+      <div class="logo">
+        <ion-icon name="alert-circle-outline" style="font-size: 60px; color: #00ffc6;"></ion-icon>
+      </div>
+      <h1>404</h1>
+      <p>Oops! The page you’re looking for doesn’t exist or was moved.</p>
+    </div>
+
+    <div class="actions">
+      <ion-button expand="block" class="home-button" (click)="goHome()">
+        <ion-icon slot="start" name="home-outline"></ion-icon>
+        Go to Home
+      </ion-button>
+
+      <ion-button expand="block" fill="clear" class="login-button" (click)="goLogin()">
+        <ion-icon slot="start" name="log-in-outline"></ion-icon>
+        Back to Login
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

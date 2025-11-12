@@ -1,49 +1,75 @@
-<ion-header translucent="true">
-  <ion-toolbar color="primary">
-    <ion-title>My Reservations</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content class="login-page">
+<ion-content class="index-page">
   <div class="bg-gradient">
     <div class="brand">
       <div class="logo">
-        <ion-icon name="car-outline" style="color:#00ffc6; font-size:42px;"></ion-icon>
+        <ion-icon name="clipboard-outline" style="color:#00ffc6; font-size:42px;"></ion-icon>
       </div>
-      <h1>ParkinGO</h1>
-      <p>Your current reservations</p>
+      <h1>Your Reservations</h1>
+      <p>View and manage your active bookings</p>
     </div>
 
-    <!-- Loading -->
-    <div *ngIf="loading" class="loading-text">
-      <ion-spinner name="crescent" color="light"></ion-spinner>
-      <p>Loading reservations...</p>
-    </div>
-
-    <!-- Empty state -->
-    <div *ngIf="!loading && reservations.length === 0" class="empty-state">
+    <!-- No reservations -->
+    <div *ngIf="!reservations || reservations.length === 0" class="empty-state">
       <ion-icon name="alert-circle-outline"></ion-icon>
-      <p>You have no active reservations.</p>
-      <ion-button fill="clear" color="success" (click)="go('reservations')">
-        Make a Reservation
-      </ion-button>
+      <p>No reservations found</p>
     </div>
 
     <!-- Reservations list -->
-    <div *ngIf="!loading && reservations.length > 0" class="reservation-list">
-      <div *ngFor="let r of reservations" class="reservation-card">
-        <h3>{{ r.vehicleType }} - {{ r.plate }}</h3>
-        <p><strong>Model:</strong> {{ r.model }}</p>
-        <p><strong>Space:</strong> {{ r.space }}</p>
-        <p><strong>Price/hour:</strong> {{ r.pricePerHour | currency:'COP' }}</p>
-        <p><strong>Start date:</strong> {{ r.startDate | date:'medium' }}</p>
+    <div class="reservations-list" *ngIf="reservations && reservations.length > 0">
+      <ion-card *ngFor="let res of reservations" class="reservation-card">
+        <div class="card-icon">
+          <ion-icon [name]="getVehicleIcon(res.vehicleType)" class="vehicle-icon"></ion-icon>
+        </div>
 
-        <ion-button fill="outline" color="danger" (click)="cancelReservation(r.id)">
-          Cancel
-        </ion-button>
-      </div>
+        <div class="card-details">
+          <h2>{{ res.plate }}</h2>
+          <p><strong>Model:</strong> {{ res.model }}</p>
+          <p><strong>Space:</strong> {{ res.space }}</p>
+          <p><strong>Price:</strong> {{ res.pricePerHour | currency:'COP' }}</p>
+          <p><strong>Status:</strong>
+            <span [ngClass]="res.status.toLowerCase()">{{ res.status | titlecase }}</span>
+          </p>
+          <p><strong>Start:</strong> {{ res.startDate | date:'medium' }}</p>
+
+          <!-- Actions -->
+          <div class="card-actions">
+            <ion-button color="primary" fill="outline" expand="block" size="small" (click)="openQR(res)">
+              <ion-icon name="qr-code-outline"></ion-icon>
+              &nbsp; Show QR
+            </ion-button>
+
+            <ion-button color="danger" fill="solid" expand="block" size="small" (click)="cancelReservation(res.id)">
+              <ion-icon name="trash-outline"></ion-icon>
+              &nbsp; Cancel
+            </ion-button>
+          </div>
+        </div>
+      </ion-card>
     </div>
   </div>
+
+  <!-- QR Modal -->
+  <ion-modal [isOpen]="showQRModal" (didDismiss)="closeQR()">
+    <ng-template>
+      <ion-header translucent>
+        <ion-toolbar color="primary">
+          <ion-title>Reservation QR</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeQR()">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding qr-modal-content">
+        <div *ngIf="selectedQR" class="qr-container">
+          <img [src]="selectedQR" alt="QR Code" />
+          <p class="qr-info">Show this QR at the parking entrance.</p>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 
   <app-submenu (navigate)="go($event)"></app-submenu>
 </ion-content>

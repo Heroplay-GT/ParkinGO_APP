@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, collection, getDocs, query, where, addDoc, doc, updateDoc } from '@angular/fire/firestore';
 import { Auth } from 'src/app/core/providers/auth/auth';
 import { Router } from '@angular/router';
+import * as QRCode from 'qrcode';
 
 @Component({
   selector: 'app-reservations',
@@ -22,7 +23,7 @@ export class ReservationsPage implements OnInit {
     private firestore: Firestore,
     private auth: Auth,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.reservaForm = this.fb.group({
@@ -57,45 +58,73 @@ export class ReservationsPage implements OnInit {
 
   // Update selected space and price
   onSelectSpace(event: any) {
-    const code = event.target.value;
-    const found = this.availableSpaces.find(s => s.code === code);
+    const id = event.detail.value;
+    const found = this.availableSpaces.find(s => s.id === id);
     if (found) {
       this.selectedSpace = found;
       this.pricePerHour = found.pricePerHour;
     }
   }
 
-  // Save reservation and update space status
+  // Save reservation and generate QR
   async saveReservation() {
     const user = await this.auth['afb'].currentUser;
-    if (!user) {
-      alert('⚠️ You must be logged in to register a reservation.');
-      return;
-    }
+    if (!user) return;
 
-    const data = {
+    const now = new Date();
+    const endDate = new Date();
+    endDate.setDate(now.getDate() + 1);
+
+    const reservationData = {
       ...this.reservaForm.value,
-      pricePerHour: this.pricePerHour,
       userId: user.uid,
       email: user.email,
-      startDate: new Date(),
+      startDate: now,
+      endDate: endDate,
+      pricePerHour: this.pricePerHour,
+      status: 'pending'
     };
 
-    await addDoc(collection(this.firestore, 'reservations'), data);
+    try {
+      // Guardar la reserva
+      const docRef = await addDoc(collection(this.firestore, 'reservations'), reservationData);
 
-    // Update space to "Occupied"
-    if (this.selectedSpace?.id) {
-      const spaceRef = doc(this.firestore, 'spaces', this.selectedSpace.id);
+      // Generar QR
+      const qrData = JSON.stringify({ id: docRef.id, plate: reservationData.plate });
+      const qrCode = await QRCode.toDataURL(qrData); // ✅ Funciona correctamente con esta importación
+
+      // Actualizar el documento con el QR
+      await updateDoc(doc(this.firestore, 'reservations', docRef.id), { qrCode });
+
+      // Cambiar el espacio a "Occupied"
+      const spaceRef = doc(this.firestore, 'spaces', this.reservaForm.value.space);
       await updateDoc(spaceRef, { status: 'Occupied' });
+
+      // Mostrar Toast
+      const toast = document.createElement('ion-toast');
+      toast.message = '✅ Reservation created successfully!';
+      toast.duration = 2500;
+      toast.color = 'success';
+      document.body.appendChild(toast);
+      await toast.present();
+
+      this.reservaForm.reset();
+      this.availableSpaces = [];
+      this.pricePerHour = 0;
+
+      this.router.navigate(['/index']);
+
+    } catch (error) {
+      console.error('🔥 Error saving reservation:', error);
+
+      const toast = document.createElement('ion-toast');
+      toast.message = '❌ Error creating reservation';
+      toast.duration = 2500;
+      toast.color = 'danger';
+      document.body.appendChild(toast);
+      await toast.present();
     }
-
-    alert('✅ Reservation registered successfully!');
-    this.reservaForm.reset();
-    this.availableSpaces = [];
-    this.pricePerHour = 0;
-    this.selectedSpace = null;
   }
-
   async doLogOut() {
     await this.auth.logout();
     this.router.navigate(['/home']);
@@ -103,7 +132,7 @@ export class ReservationsPage implements OnInit {
 
   async go(route: string) {
 
-    switch(route) {
+    switch (route) {
       case 'index':
         this.router.navigate(['/index']);
         break;

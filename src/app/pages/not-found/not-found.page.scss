@@ -1,0 +1,82 @@
+.notfound-page {
+  --background: #0b1416;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #eaeaea;
+  font-family: 'Poppins', sans-serif;
+}
+
+.bg-gradient {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 25px;
+  border-radius: 16px;
+  background: radial-gradient(circle at 30% 20%, #0f2027, #091416);
+  box-shadow: 0 0 25px rgba(0, 255, 198, 0.08);
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.logo {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  background: rgba(0, 255, 198, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 15px rgba(0, 255, 198, 0.3);
+}
+
+.brand h1 {
+  color: #00ffc6;
+  font-size: 4rem;
+  font-weight: 800;
+  margin: 10px 0 5px;
+  letter-spacing: 2px;
+}
+
+.brand p {
+  color: #b3b3b3;
+  font-size: 0.95rem;
+  margin-bottom: 40px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.home-button {
+  --background: linear-gradient(90deg, #00ffc6, #00bfa5);
+  color: #0b1416;
+  font-weight: 600;
+  border-radius: 25px;
+  box-shadow: 0 0 15px rgba(0, 255, 198, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.home-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(0, 255, 198, 0.5);
+}
+
+.login-button {
+  color: #00ffc6;
+  font-weight: 500;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -10,7 +10,7 @@
 
 .bg-gradient {
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   padding: 40px 25px;
   border-radius: 16px;
   background: radial-gradient(circle at 30% 20%, #0f2027, #091416);
@@ -20,7 +20,7 @@
 }
 
 .brand {
-  margin-bottom: 40px;
+  margin-bottom: 35px;
 }
 
 .logo {
@@ -35,22 +35,27 @@
   box-shadow: 0 0 15px rgba(0, 255, 198, 0.3);
 }
 
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+ion-item.custom-item {
+  --background: rgba(255, 255, 255, 0.08);
+  --color: #eaeaea;
+  --placeholder-color: #aaa;
+  --border-radius: 12px;
+  --highlight-color-focused: #00ffc6;
+  margin-bottom: 18px;
+  border-radius: 12px;
 }
 
-.input-box select,
-.input-box input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  border: none;
-  background: rgba(255, 255, 255, 0.08);
+ion-select,
+ion-input {
+  --color: #eaeaea;
+  font-size: 1rem;
+  --padding-start: 12px;
+  --padding-end: 12px;
+}
+
+ion-select::part(text),
+ion-input::part(native) {
   color: #eaeaea;
-  font-size: 0.95rem;
-  outline: none;
 }
 
 .login-button {
@@ -71,7 +76,7 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(-20px);
   }
   to {
     opacity: 1;
