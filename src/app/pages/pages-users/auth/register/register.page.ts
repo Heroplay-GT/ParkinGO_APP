@@ -27,7 +27,9 @@ export class RegisterPage implements OnInit {
       name: new FormControl('', [Validators.required, Validators.minLength(3)]),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      confirmPassword: new FormControl('', Validators.required)
+      confirmPassword: new FormControl('', Validators.required),
+      phoneNumber: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
+
     });
   }
 
@@ -48,7 +50,7 @@ export class RegisterPage implements OnInit {
       return;
     }
 
-    const uid = await this.authSrv.register(this.registerForm.value.email, this.registerForm.value.password);
+    const uid = await this.authSrv.register(this.registerForm.value.email, this.registerForm.value.password, this.registerForm.value.phoneNumber);
 
     await this.querySrv.create('users', {
       name: this.registerForm.value.name,

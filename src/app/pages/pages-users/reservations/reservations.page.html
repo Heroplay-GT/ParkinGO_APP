@@ -1,0 +1,67 @@
+<ion-header translucent="true">
+  <ion-toolbar color="primary">
+    <ion-title>Register Reservation</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="login-page">
+  <div class="bg-gradient">
+    <div class="brand">
+      <div class="logo">
+        <ion-icon name="car-outline" style="color:#00ffc6; font-size:42px;"></ion-icon>
+      </div>
+      <h1>ParkinGO</h1>
+      <p>Book your parking space easily</p>
+    </div>
+
+    <form [formGroup]="reservaForm" (ngSubmit)="saveReservation()" class="login-form">
+
+      <!-- Vehicle Type -->
+      <div class="input-box">
+        <select formControlName="vehicleType" (change)="updateType()" required>
+          <option value="">Select Vehicle Type...</option>
+          <option *ngFor="let type of vehicleTypes" [value]="type">
+            {{ type }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Plate -->
+      <div class="input-box">
+        <input type="text" formControlName="plate" placeholder="License Plate" required />
+      </div>
+
+      <!-- Vehicle Model -->
+      <div class="input-box">
+        <input type="text" formControlName="model" placeholder="Vehicle Model" required />
+      </div>
+
+      <!-- Space to Use -->
+      <div class="input-box" *ngIf="availableSpaces.length > 0">
+        <select formControlName="space" (change)="onSelectSpace($event)" required>
+          <option value="">Select Space...</option>
+          <option *ngFor="let space of availableSpaces" [value]="space.code">
+            {{ space.code }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Price (read-only) -->
+      <div class="input-box" *ngIf="pricePerHour > 0">
+        <input
+          type="text"
+          [value]="pricePerHour | currency:'COP'"
+          placeholder="Price per Hour"
+          readonly
+        />
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="login-button" [disabled]="reservaForm.invalid">
+        Register
+      </button>
+    </form>
+  </div>
+
+  <app-submenu (navigate)="go($event)"></app-submenu>
+</ion-content>

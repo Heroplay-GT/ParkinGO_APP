@@ -5,13 +5,13 @@
         <svg width="60" height="60" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
           <!-- Background circle -->
           <circle cx="60" cy="60" r="60" fill="url(#logoGradientRegister)"/>
-          
+
           <!-- Pin shape -->
           <path d="M60 25C47.85 25 38 34.85 38 47C38 64.5 60 95 60 95S82 64.5 82 47C82 34.85 72.15 25 60 25ZM60 57C54.48 57 50 52.52 50 47C50 41.48 54.48 37 60 37C65.52 37 70 41.48 70 47C70 52.52 65.52 57 60 57Z" fill="#0b1416"/>
-          
+
           <!-- Inner circle -->
           <circle cx="60" cy="47" r="8" fill="#0b1416"/>
-          
+
           <!-- Gradient definition -->
           <defs>
             <linearGradient id="logoGradientRegister" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -38,6 +38,13 @@
         placeholder="Email Address"
         [value]="registerForm.get('email')?.value"
         (valueChange)="registerForm.get('email')?.setValue($event)">
+      </app-input>
+
+      <app-input
+        icon="call-outline"
+        placeholder="Phone Number"
+        [value]="registerForm.get('phoneNumber')?.value"
+        (valueChange)="registerForm.get('phoneNumber')?.setValue($event)">
       </app-input>
 
       <app-input

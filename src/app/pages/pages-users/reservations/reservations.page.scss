@@ -1,0 +1,80 @@
+.login-page {
+  --background: #0b1416;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: #eaeaea;
+  font-family: 'Poppins', sans-serif;
+}
+
+.bg-gradient {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 25px;
+  border-radius: 16px;
+  background: radial-gradient(circle at 30% 20%, #0f2027, #091416);
+  box-shadow: 0 0 25px rgba(0, 255, 198, 0.08);
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.brand {
+  margin-bottom: 40px;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 15px rgba(0, 255, 198, 0.3);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-box select,
+.input-box input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: #eaeaea;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.login-button {
+  margin-top: 10px;
+  --background: linear-gradient(90deg, #00ffc6, #00bfa5);
+  color: #0b1416;
+  font-weight: 600;
+  border-radius: 30px;
+  box-shadow: 0 0 15px rgba(0, 255, 198, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 255, 198, 0.35);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

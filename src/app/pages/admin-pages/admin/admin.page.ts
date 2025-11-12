@@ -1,3 +1,4 @@
+import { Auth } from 'src/app/core/providers/auth/auth';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -9,12 +10,20 @@ import { Router } from '@angular/router';
 })
 export class AdminPage implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private readonly auth: Auth
+  ) { }
 
   ngOnInit() {
   }
 
-  onNav(route: string) {
+  async doLogOut() {
+    await  this.auth.logout();
+    this.router.navigate(['/login-admin']);
+  }
+
+  async onNav(route: string) {
 
     switch(route) {
       case 'clientes':
@@ -33,8 +42,7 @@ export class AdminPage implements OnInit {
         this.router.navigate(['/']);
         break;
       case 'logout':
-
-        this.router.navigate(['/login-admin']);
+        await this.doLogOut();
         break;
       default:
         console.log('Unknown nav:', route);

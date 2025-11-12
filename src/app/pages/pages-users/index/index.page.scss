@@ -1,0 +1,39 @@
+.login-page {
+  --background: #0b1416;
+  color: #eaeaea;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.bg-gradient {
+  width: 100%;
+  max-width: 450px;
+  padding: 40px 25px;
+  border-radius: 16px;
+  background: radial-gradient(circle at 30% 20%, #0f2027, #091416);
+  box-shadow: 0 0 25px rgba(0, 255, 198, 0.08);
+  text-align: center;
+}
+
+.no-reservations {
+  margin-top: 30px;
+  text-align: center;
+  color: #aaa;
+}
+
+.no-icon {
+  font-size: 3rem;
+  color: #00ffc6;
+  margin-bottom: 10px;
+}
+
+.reservation-card {
+  margin-top: 15px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #eaeaea;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 255, 198, 0.1);
+}

@@ -25,7 +25,7 @@ export class Auth {
   ) { }
 
   // Register a new user with email and password
-  async register(email: string, password: string): Promise<string> {
+  async register(email: string, password: string, phoneNumber: string): Promise<string> {
     try {
       const response = await createUserWithEmailAndPassword(this.afb, email, password);
 
@@ -36,6 +36,7 @@ export class Auth {
       await setDoc(userRef, {
         uid: response.user.uid,
         email: email,
+        phoneNumber: phoneNumber,
         role: 'user',
         createdAt: new Date(),
         provider: 'email'

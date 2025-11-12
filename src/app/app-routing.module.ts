@@ -15,9 +15,6 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./pages/pages-users/home/home.module').then( m => m.HomePageModule),
-
-    canActivate: [AuthGuard],
-    data: { authGuardPipe: isLogged }
   },
   {
     path: 'login',
@@ -35,17 +32,23 @@ const routes: Routes = [
   {
     path: 'index',
     loadChildren: () => import('./pages/pages-users/index/index.module').then( m => m.IndexPageModule),
-    canActivate: [UserGuard]
+    canActivate: [UserGuard],
   },
   {
     path: 'login-admin',
     loadChildren: () => import('./pages/admin-pages/auth/login-admin/login-admin.module').then( m => m.LoginAdminPageModule)
   },
   {
+    path: 'reservations',
+    loadChildren: () => import('./pages/pages-users/reservations/reservations.module').then( m => m.ReservationsPageModule),
+    canActivate: [UserGuard],
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
   },
+
 
 
 
