@@ -166,20 +166,13 @@ export class IndexPage implements OnInit {
   // 🔹 Navegación del submenú
   async go(route: string) {
     switch (route) {
-      case 'index':
-        this.router.navigate(['/index']);
-        break;
-      case 'reportes':
-        this.router.navigate(['/']);
-        break;
+
       case 'reservations':
         this.router.navigate(['/reservations']);
         break;
-      case 'retirar':
-        this.router.navigate(['/']);
-        break;
+
       case 'config':
-        this.router.navigate(['/']);
+        this.router.navigate(['/config']);
         break;
       case 'logout':
         await this.doLogOut();

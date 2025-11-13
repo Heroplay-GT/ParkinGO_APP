@@ -1,0 +1,161 @@
+.config-page {
+  --background: #0b1416;
+  font-family: 'Poppins', sans-serif;
+  color: #eaeaea;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-container {
+  width: 100%;
+  max-width: 420px;
+  margin: 40px auto;
+  padding: 35px 20px;
+  border-radius: 20px;
+  background: radial-gradient(circle at top, #0f2027, #091416);
+  box-shadow: 0 0 20px rgba(0, 255, 198, 0.15);
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.logo {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  background: rgba(0, 255, 198, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 12px rgba(0, 255, 198, 0.25);
+
+  ion-icon {
+    font-size: 38px;
+    color: #00ffc6;
+  }
+}
+
+.brand h1 {
+  color: #00ffc6;
+  margin-bottom: 8px;
+  font-size: 1.4rem;
+}
+
+.brand p {
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.btn-option {
+  --border-radius: 30px;
+  font-weight: 600;
+  --background: linear-gradient(90deg, #00ffc6, #00bfa5);
+  color: #0b1416;
+  text-transform: none;
+  box-shadow: 0 0 12px rgba(0, 255, 198, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  ion-icon {
+    margin-right: 8px;
+    font-size: 20px;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 18px rgba(0, 255, 198, 0.5);
+  }
+
+  &.danger {
+    --background: linear-gradient(90deg, #ff3b3b, #b91c1c);
+    color: #fff;
+  }
+}
+
+.modal-content {
+  background: #0f1a1c;
+  color: #fff;
+
+  .custom-item {
+    --background: rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    margin-bottom: 12px;
+  }
+
+  .btn-save {
+    --background: linear-gradient(90deg, #00ffc6, #00bfa5);
+    color: #0b1416;
+    font-weight: 600;
+    margin-top: 15px;
+    border-radius: 25px;
+  }
+}
+
+.delete-modal {
+  text-align: center;
+
+  .warning-icon {
+    font-size: 60px;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    margin: 8px 0;
+    color: #ff3b3b;
+  }
+
+  p {
+    color: #ccc;
+    margin-bottom: 20px;
+  }
+}
+
+ion-button.btn-option {
+  --background: linear-gradient(90deg, #00ffc6, #00bfa5);
+  --border-radius: 50px; /* más redondeado */
+  --box-shadow: none;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 14px;
+  --padding-bottom: 14px;
+  --border-width: 0;
+  --background-activated: linear-gradient(90deg, #00e6b0, #00a890);
+  --background-focused: linear-gradient(90deg, #00ffc6, #00bfa5);
+  --background-hover: linear-gradient(90deg, #00e6b0, #00a890);
+
+  margin: 0;
+  box-shadow: none !important;
+  background: none !important;
+  border: none;
+}
+
+.button-group {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0;
+}
+
+.btn-option.danger {
+  --background: linear-gradient(90deg, #ff3b3b, #b91c1c);
+  --background-hover: linear-gradient(90deg, #e63535, #991818);
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

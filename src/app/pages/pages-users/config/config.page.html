@@ -1,0 +1,118 @@
+<ion-header translucent="true">
+  <ion-toolbar color="primary">
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="config-page">
+  <div class="settings-container animate-fade-in">
+    <div class="brand">
+      <div class="logo">
+        <ion-icon name="settings-outline"></ion-icon>
+      </div>
+      <h1>Account Settings</h1>
+      <p>Manage and personalize your account</p>
+    </div>
+
+    <!-- Botones principales -->
+    <div class="button-group">
+      <ion-button expand="block" fill="solid" class="btn-option" (click)="openModal('info')">
+        <ion-icon name="person-circle-outline"></ion-icon>
+        <span>Update Profile</span>
+      </ion-button>
+
+      <ion-button expand="block" fill="solid" class="btn-option" (click)="openModal('password')">
+        <ion-icon name="key-outline"></ion-icon>
+        <span>Change Password</span>
+      </ion-button>
+
+      <ion-button expand="block" fill="solid" color="danger" class="btn-option danger" (click)="openModal('delete')">
+        <ion-icon name="trash-outline"></ion-icon>
+        <span>Delete Account</span>
+      </ion-button>
+    </div>
+  </div>
+
+  <!-- Modal: Update Info -->
+  <ion-modal [isOpen]="activeModal === 'info'" (didDismiss)="closeModal()">
+    <ng-template>
+      <ion-header translucent>
+        <ion-toolbar color="primary">
+          <ion-title>Update Info</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeModal()"><ion-icon name="close-outline"></ion-icon></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding modal-content">
+        <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+          <ion-item lines="none" class="custom-item">
+            <ion-input formControlName="name" placeholder="Full Name"></ion-input>
+          </ion-item>
+          <ion-item lines="none" class="custom-item">
+            <ion-input formControlName="email" placeholder="Email"></ion-input>
+          </ion-item>
+          <ion-item lines="none" class="custom-item">
+            <ion-input formControlName="phone" placeholder="Phone"></ion-input>
+          </ion-item>
+          <ion-button expand="block" type="submit" class="btn-save" [disabled]="profileForm.invalid">
+            <ion-icon name="save-outline"></ion-icon>
+            &nbsp; Save Changes
+          </ion-button>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- Modal: Change Password -->
+  <ion-modal [isOpen]="activeModal === 'password'" (didDismiss)="closeModal()">
+    <ng-template>
+      <ion-header translucent>
+        <ion-toolbar color="primary">
+          <ion-title>Change Password</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeModal()"><ion-icon name="close-outline"></ion-icon></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding modal-content">
+        <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+          <ion-item lines="none" class="custom-item">
+            <ion-input formControlName="newPassword" type="password" placeholder="New Password"></ion-input>
+          </ion-item>
+          <ion-button expand="block" type="submit" class="btn-save" [disabled]="passwordForm.invalid">
+            <ion-icon name="key-outline"></ion-icon>
+            &nbsp; Update Password
+          </ion-button>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- Modal: Delete Account -->
+  <ion-modal [isOpen]="activeModal === 'delete'" (didDismiss)="closeModal()">
+    <ng-template>
+      <ion-header translucent>
+        <ion-toolbar color="danger">
+          <ion-title>Delete Account</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeModal()"><ion-icon name="close-outline"></ion-icon></ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding modal-content delete-modal">
+        <ion-icon name="warning-outline" color="danger" class="warning-icon"></ion-icon>
+        <h2>Are you sure?</h2>
+        <p>This action cannot be undone.</p>
+
+        <ion-button expand="block" color="danger" (click)="deleteAccount()">
+          <ion-icon name="trash-outline"></ion-icon>
+          &nbsp; Delete My Account
+        </ion-button>
+        <ion-button expand="block" fill="clear" (click)="closeModal()">Cancel</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <app-submenu (navigate)="go($event)"></app-submenu>
+</ion-content>

@@ -48,10 +48,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/not-found/not-found.module').then( m => m.NotFoundPageModule)
   },
   {
+    path: 'config',
+    loadChildren: () => import('./pages/pages-users/config/config.module').then( m => m.ConfigPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'not-found',
     pathMatch: 'full'
   },
+
 
 ];
 

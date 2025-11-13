@@ -23,7 +23,7 @@ export class ReservationsPage implements OnInit {
     private firestore: Firestore,
     private auth: Auth,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.reservaForm = this.fb.group({
@@ -34,9 +34,20 @@ export class ReservationsPage implements OnInit {
     });
   }
 
-  // Load available spaces by vehicle type
+  // Cargar espacios disponibles según el tipo
   async updateType() {
     const type = this.reservaForm.get('vehicleType')?.value;
+
+    // 🔹 Si es bicicleta, no requerimos placa
+    const plateControl = this.reservaForm.get('plate');
+    if (type === 'Bicycle') {
+      plateControl?.clearValidators();
+      plateControl?.updateValueAndValidity();
+    } else {
+      plateControl?.setValidators([Validators.required]);
+      plateControl?.updateValueAndValidity();
+    }
+
     if (!type) return;
 
     const q = query(
@@ -56,7 +67,6 @@ export class ReservationsPage implements OnInit {
     this.pricePerHour = 0;
   }
 
-  // Update selected space and price
   onSelectSpace(event: any) {
     const id = event.detail.value;
     const found = this.availableSpaces.find(s => s.id === id);
@@ -66,17 +76,50 @@ export class ReservationsPage implements OnInit {
     }
   }
 
-  // Save reservation and generate QR
+  // 🔹 Validar que no haya reservas con la misma placa
+  async plateExists(plate: string): Promise<boolean> {
+    const q = query(
+      collection(this.firestore, 'reservations'),
+      where('plate', '==', plate),
+      where('status', 'in', ['pending', 'active'])
+    );
+
+    const snapshot = await getDocs(q);
+    return !snapshot.empty; // true si ya existe una reserva activa/pendiente con esa placa
+  }
+
+  // Guardar reserva
   async saveReservation() {
     const user = await this.auth['afb'].currentUser;
     if (!user) return;
+
+    const type = this.reservaForm.value.vehicleType;
+    const plate = this.reservaForm.value.plate;
+
+    // 🔸 Validar placa duplicada si no es bicicleta
+    if (type !== 'Bicycle' && plate) {
+      const exists = await this.plateExists(plate);
+      if (exists) {
+        const toast = document.createElement('ion-toast');
+        toast.message = '⚠️ A reservation already exists with this plate.';
+        toast.duration = 2500;
+        toast.color = 'warning';
+        document.body.appendChild(toast);
+        await toast.present();
+        return;
+      }
+    }
 
     const now = new Date();
     const endDate = new Date();
     endDate.setDate(now.getDate() + 1);
 
     const reservationData = {
-      ...this.reservaForm.value,
+      vehicleType: type,
+      plate: plate || 'N/A',
+      model: this.reservaForm.value.model,
+      space: this.selectedSpace.code,
+      spaceId: this.selectedSpace.id,
       userId: user.uid,
       email: user.email,
       startDate: now,
@@ -86,21 +129,18 @@ export class ReservationsPage implements OnInit {
     };
 
     try {
-      // Guardar la reserva
       const docRef = await addDoc(collection(this.firestore, 'reservations'), reservationData);
 
       // Generar QR
       const qrData = JSON.stringify({ id: docRef.id, plate: reservationData.plate });
-      const qrCode = await QRCode.toDataURL(qrData); // ✅ Funciona correctamente con esta importación
+      const qrCode = await QRCode.toDataURL(qrData);
 
-      // Actualizar el documento con el QR
       await updateDoc(doc(this.firestore, 'reservations', docRef.id), { qrCode });
 
-      // Cambiar el espacio a "Occupied"
-      const spaceRef = doc(this.firestore, 'spaces', this.reservaForm.value.space);
+      // Marcar espacio como ocupado
+      const spaceRef = doc(this.firestore, 'spaces', this.selectedSpace.id);
       await updateDoc(spaceRef, { status: 'Occupied' });
 
-      // Mostrar Toast
       const toast = document.createElement('ion-toast');
       toast.message = '✅ Reservation created successfully!';
       toast.duration = 2500;
@@ -111,20 +151,17 @@ export class ReservationsPage implements OnInit {
       this.reservaForm.reset();
       this.availableSpaces = [];
       this.pricePerHour = 0;
-
-      this.router.navigate(['/index']);
-
     } catch (error) {
       console.error('🔥 Error saving reservation:', error);
-
       const toast = document.createElement('ion-toast');
-      toast.message = '❌ Error creating reservation';
+      toast.message = '❌ Error saving reservation.';
       toast.duration = 2500;
       toast.color = 'danger';
       document.body.appendChild(toast);
       await toast.present();
     }
   }
+
   async doLogOut() {
     await this.auth.logout();
     this.router.navigate(['/home']);
@@ -136,17 +173,9 @@ export class ReservationsPage implements OnInit {
       case 'index':
         this.router.navigate(['/index']);
         break;
-      case 'reportes':
-        this.router.navigate(['/']);
-        break;
-      case 'reservations':
-        this.router.navigate(['/reservations']);
-        break;
-      case 'retirar':
-        this.router.navigate(['/']);
-        break;
+
       case 'config':
-        this.router.navigate(['/']);
+        this.router.navigate(['/config']);
         break;
       case 'logout':
         await this.doLogOut();
