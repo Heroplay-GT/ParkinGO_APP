@@ -26,16 +26,13 @@ export class AdminPage implements OnInit {
   async onNav(route: string) {
 
     switch(route) {
-      case 'clientes':
-        this.router.navigate(['/']);
+      case 'clients':
+        this.router.navigate(['/clients']);
         break;
       case 'reportes':
         this.router.navigate(['/']);
         break;
       case 'ingreso':
-        this.router.navigate(['/']);
-        break;
-      case 'retirar':
         this.router.navigate(['/']);
         break;
       case 'config':

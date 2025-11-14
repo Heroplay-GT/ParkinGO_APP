@@ -39,9 +39,9 @@ export class IndexPage implements OnInit {
   }
 
   async ionViewWillEnter() {
-  await this.loadReservations(); // 🔹 recarga cada vez que entras
-  await this.markExpiredReservations();
-}
+    await this.loadReservations(); // 🔹 recarga cada vez que entras
+    await this.markExpiredReservations();
+  }
 
 
   // 🔹 Cargar reservas del usuario ordenadas (más recientes primero)
@@ -104,9 +104,19 @@ export class IndexPage implements OnInit {
       const ref = doc(this.firestore, 'reservations', reservationId);
       await updateDoc(ref, { status: 'cancelled' });
 
-      // 🔹 Espacio disponible de nuevo
-      const spaceRef = doc(this.firestore, 'spaces', res.space);
-      await updateDoc(spaceRef, { status: 'Available' });
+      // 1️⃣ Buscar espacio por el campo "code"
+      const spaceQuery = query(
+        collection(this.firestore, 'spaces'),
+        where('code', '==', res.space)
+      );
+
+      const spaceSnap = await getDocs(spaceQuery);
+
+      // 2️⃣ Actualizar el espacio encontrado
+      for (const s of spaceSnap.docs) {
+        await updateDoc(s.ref, { status: 'Available' });
+      }
+
 
       // 🔹 Actualizar lista local
       res.status = 'cancelled';

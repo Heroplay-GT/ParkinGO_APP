@@ -52,10 +52,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/pages-users/config/config.module').then( m => m.ConfigPageModule)
   },
   {
+    path: 'clients',
+    loadChildren: () => import('./pages/admin-pages/clients/clients.module').then( m => m.ClientsPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'not-found',
     pathMatch: 'full'
   },
+
 
 
 ];

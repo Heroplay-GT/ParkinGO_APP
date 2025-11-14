@@ -25,30 +25,24 @@ export class Auth {
   ) { }
 
   // Register a new user with email and password
-  async register(email: string, password: string, phoneNumber: string): Promise<string> {
-    try {
-      const response = await createUserWithEmailAndPassword(this.afb, email, password);
+async register(email: string, password: string, phoneNumber: string, name: string): Promise<string> {
+  const response = await createUserWithEmailAndPassword(this.afb, email, password);
 
-      // Send email verification
-      await sendEmailVerification(response.user);
+  await sendEmailVerification(response.user);
 
-      const userRef = doc(this.db, 'users', response.user.uid);
-      await setDoc(userRef, {
-        uid: response.user.uid,
-        email: email,
-        phoneNumber: phoneNumber,
-        role: 'user',
-        createdAt: new Date(),
-        provider: 'email'
-      });
+  const userRef = doc(this.db, 'users', response.user.uid);
+  await setDoc(userRef, {
+    uid: response.user.uid,
+    email,
+    name,
+    phoneNumber,
+    role: 'user',
+    createdAt: new Date(),
+    provider: 'email'
+  });
 
-      console.log('User registered and saved in Firestore:', response.user);
-      return response.user.uid;
-    } catch (error) {
-      console.error('Error registering user:', (error as any).message);
-      throw error;
-    }
-  }
+  return response.user.uid;
+}
 
   // login an existing user with email and password
   async login(email: string, password: string): Promise<void> {

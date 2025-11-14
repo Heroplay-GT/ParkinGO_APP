@@ -52,13 +52,6 @@ export class RegisterPage implements OnInit {
 
     const uid = await this.authSrv.register(this.registerForm.value.email, this.registerForm.value.password, this.registerForm.value.phoneNumber);
 
-    await this.querySrv.create('users', {
-      name: this.registerForm.value.name,
-      email: this.registerForm.value.email,
-      uid,
-      role: 'user'
-    });
-
     this.router.navigate(['/login']);
   }
 
