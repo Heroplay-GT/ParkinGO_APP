@@ -12,6 +12,10 @@ import { Router } from '@angular/router';
 export class ClientsPage implements OnInit {
 
   clients: any[] = [];
+  filteredClients: any[] = [];
+
+  searchTerm: string = '';
+  providerFilter: string = 'all';
   loading = true;
 
   constructor(
@@ -30,7 +34,7 @@ export class ClientsPage implements OnInit {
     try {
       const qClients = query(
         collection(this.firestore, 'users'),
-        where('role', '==', 'user')   // 👈 adaptado a tu Firestore
+        where('role', '==', 'user')
       );
 
       const snapshot = await getDocs(qClients);
@@ -40,12 +44,44 @@ export class ClientsPage implements OnInit {
         ...doc.data()
       }));
 
+      this.filteredClients = [...this.clients];
+
     } catch (err) {
       console.error("🔥 Error loading clients:", err);
     }
 
     this.loading = false;
   }
+
+  showDetails = false;
+  selectedClient: any = null;
+
+  openDetails(client: any) {
+    this.selectedClient = client;
+    this.showDetails = true;
+  }
+
+  applyFilters() {
+    const term = this.searchTerm.toLowerCase();
+
+    this.filteredClients = this.clients.filter(client => {
+      const matchesSearch =
+        client.name?.toLowerCase().includes(term) ||
+        client.email?.toLowerCase().includes(term);
+
+      const matchesProvider =
+        this.providerFilter === 'all' ||
+        client.provider === this.providerFilter;
+
+      return matchesSearch && matchesProvider;
+    });
+  }
+
+  closeDetails() {
+    this.showDetails = false;
+    this.selectedClient = null;
+  }
+
 
   async doLogOut() {
     await this.auth.logout();

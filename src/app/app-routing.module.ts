@@ -49,7 +49,8 @@ const routes: Routes = [
   },
   {
     path: 'config',
-    loadChildren: () => import('./pages/pages-users/config/config.module').then( m => m.ConfigPageModule)
+    loadChildren: () => import('./pages/pages-users/config/config.module').then( m => m.ConfigPageModule),
+    canActivate: [UserGuard],
   },
   {
     path: 'clients',
@@ -59,7 +60,11 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'not-found',
     pathMatch: 'full'
+  },  {
+    path: 'config-admin',
+    loadChildren: () => import('./pages/admin-pages/config-admin/config-admin.module').then( m => m.ConfigAdminPageModule)
   },
+
 
 
 
