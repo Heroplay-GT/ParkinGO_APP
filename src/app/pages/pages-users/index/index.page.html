@@ -50,7 +50,7 @@
               expand="block"
               size="small"
               (click)="cancelReservation(res.id)"
-              [disabled]="res.status === 'cancelled' || res.status === 'expired'"
+              [disabled]="res.status === 'cancelled' || res.status === 'expired' || res.status === 'active'"
             >
               <ion-icon name="trash-outline"></ion-icon>
               &nbsp; Cancel

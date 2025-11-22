@@ -1,0 +1,125 @@
+<ion-content class="ingreso-page">
+
+  <div class="header">
+    <h1>Vehicle Entry</h1>
+    <p>Manage incoming vehicles</p>
+  </div>
+
+  <!-- Botón para ingreso SIN reserva -->
+  <ion-button expand="block" color="primary" (click)="openManualEntryModal()">
+    <ion-icon name="add-circle-outline"></ion-icon>
+    &nbsp; Enter Vehicle Without Reservation
+  </ion-button>
+
+  <h2 class="section-title">Pending Reservations</h2>
+
+  <div class="search-box">
+    <ion-item lines="none">
+      <ion-icon name="search-outline" slot="start"></ion-icon>
+      <ion-input placeholder="Search by plate..." [(ngModel)]="searchPlate" (ionInput)="filterReservations()">
+      </ion-input>
+    </ion-item>
+  </div>
+
+  <!-- Lista de reservas -->
+  <ion-list>
+    <ion-item *ngFor="let res of filteredReservations" (click)="openReservationActions(res)">
+      <ion-icon [name]="getVehicleIcon(res.vehicleType)" slot="start"></ion-icon>
+      <ion-label>
+        <h2>{{ res.plate }} — {{ res.model }}</h2>
+        <p>Space: {{ res.space }} | Status: {{ res.status }}</p>
+      </ion-label>
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-item>
+  </ion-list>
+
+  <!-- MODAL DE ACCIONES PARA RESERVA -->
+  <ion-modal [isOpen]="showReservationModal" (didDismiss)="closeReservationModal()">
+    <ng-template>
+      <ion-header translucent>
+        <ion-toolbar color="primary">
+          <ion-title>Reservation Options</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeReservationModal()">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+
+        <div *ngIf="selectedReservation">
+          <h2>{{ selectedReservation.plate }}</h2>
+          <p><strong>Model:</strong> {{ selectedReservation.model }}</p>
+          <p><strong>Space:</strong> {{ selectedReservation.space }}</p>
+          <p><strong>Status:</strong> {{ selectedReservation.status }}</p>
+        </div>
+
+        <ion-button expand="block" color="success" (click)="ingresarReserva()">
+          <ion-icon name="log-in-outline"></ion-icon>
+          &nbsp; Enter Vehicle
+        </ion-button>
+
+        <ion-button expand="block" color="danger" (click)="cancelarReserva()">
+          <ion-icon name="close-circle-outline"></ion-icon>
+          &nbsp; Cancel Reservation
+        </ion-button>
+
+      </ion-content>
+
+    </ng-template>
+  </ion-modal>
+
+  <!-- MODAL PARA INGRESAR VEHÍCULO SIN RESERVA -->
+  <ion-modal [isOpen]="showManualEntryModal" (didDismiss)="closeManualEntryModal()">
+    <ng-template>
+      <ion-header translucent>
+        <ion-toolbar color="primary">
+          <ion-title>Manual Entry</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeManualEntryModal()">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+
+        <ion-item>
+          <ion-select placeholder="Vehicle Type" [(ngModel)]="manual.type">
+            <ion-select-option value="Car">Car</ion-select-option>
+            <ion-select-option value="Motorcycle">Motorcycle</ion-select-option>
+            <ion-select-option value="Bicycle">Bicycle</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-input placeholder="Plate" [(ngModel)]="manual.plate"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input placeholder="Model" [(ngModel)]="manual.model"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-select placeholder="Space" [(ngModel)]="manual.space">
+            <ion-select-option *ngFor="let s of availableSpaces" [value]="s.code">
+              {{ s.code }} ({{ s.pricePerHour | currency:'COP' }})
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-button expand="block" color="success" (click)="createManualEntry()">
+          <ion-icon name="log-in-outline"></ion-icon>
+          &nbsp; Confirm Entry
+        </ion-button>
+
+      </ion-content>
+
+    </ng-template>
+  </ion-modal>
+
+  <app-admin-submenu (navigate)="go($event)"></app-admin-submenu>
+</ion-content>

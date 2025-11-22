@@ -1,0 +1,183 @@
+/* ============================================================
+   🌙 ESTILOS GENERALES DEL ADMIN PAGE
+   ============================================================ */
+.admin-page {
+  --background: #0b1416;
+  color: #eaeaea;
+}
+
+/* ============================================================
+   🟩 HEADER
+   ============================================================ */
+.header {
+  text-align: center;
+  padding: 25px 10px;
+
+  h1 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: #00ffc6;
+  }
+
+  p {
+    margin-top: 5px;
+    color: #b8b8b8;
+  }
+}
+
+/* ============================================================
+   🔍 SEARCH BOX
+   ============================================================ */
+.search-box {
+  margin: 15px;
+  border-radius: 14px;
+  --background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 255, 198, 0.15);
+  --padding-start: 12px;
+}
+
+.search-box ion-input {
+  color: white;
+}
+
+/* ============================================================
+   🟢 SECTION TITLES
+   ============================================================ */
+.section-title {
+  margin: 20px 15px 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #00ffc6;
+}
+
+/* ============================================================
+   ⚪ EMPTY STATE
+   ============================================================ */
+.empty {
+  margin-top: 60px;
+  text-align: center;
+  color: #999;
+
+  ion-icon {
+    font-size: 60px;
+    color: #555;
+  }
+}
+
+/* ============================================================
+   📋 LISTA DE VEHÍCULOS
+   ============================================================ */
+ion-list {
+  background: transparent;
+  padding: 0 10px;
+}
+
+/* Quitar fondo por defecto del ion-item */
+ion-item {
+  --background: transparent !important;
+  --ion-item-background: transparent !important;
+  background: transparent !important;
+  border-radius: 16px;
+}
+
+ion-item::part(native) {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ============================================================
+   🚗 VEHICLE ITEM CARD
+   ============================================================ */
+.vehicle-item {
+  margin: 12px 0;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(0, 255, 198, 0.15);
+  backdrop-filter: blur(10px);
+  transition: 0.25s ease-in-out;
+}
+
+.vehicle-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0px 0px 14px rgba(0, 255, 198, 0.2);
+}
+
+.vehicle-item ion-label h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.vehicle-item ion-label p {
+  margin: 2px 0;
+  font-size: 14px;
+  color: #eaeaea;
+  opacity: .8;
+}
+
+.vehicle-item ion-icon[slot="start"] {
+  color: #00ffc6;
+  font-size: 24px;
+}
+
+.vehicle-item ion-icon[name="chevron-forward-outline"] {
+  color: #b5b5b5;
+}
+
+/* ============================================================
+   🟥 SLIDING OPTIONS
+   ============================================================ */
+ion-item-option {
+  border-radius: 12px;
+  margin: 8px 0;
+}
+
+/* ============================================================
+   🧾 MODAL INFO (DETALLES DEL VEHÍCULO)
+   ============================================================ */
+.modal-info {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  padding: 20px;
+  border: 1px solid rgba(0, 255, 198, 0.15);
+
+  h2 {
+    font-size: 24px;
+    color: #00ffc6;
+    margin-bottom: 10px;
+  }
+}
+
+/* ============================================================
+   💵 BILLING CARD (FACTURACIÓN)
+   ============================================================ */
+.billing-card {
+  background: rgba(0, 255, 198, 0.12);
+  border-radius: 14px;
+  padding: 15px;
+  margin-top: 15px;
+  border: 1px solid rgba(0, 255, 198, 0.3);
+
+  h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    color: #00ffc6;
+  }
+
+  p {
+    margin: 5px 0;
+    color: #eaeaea;
+  }
+
+  .total {
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #00ffc6;
+  }
+}

@@ -1,0 +1,244 @@
+.ingreso-page {
+  --background: #0b1416;
+  color: #eaeaea;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ✨ HEADER */
+.header {
+  text-align: center;
+  padding: 25px 15px;
+  animation: fadeIn 0.6s ease;
+
+  h1 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #00ffc6;
+    text-shadow: 0 0 10px rgba(0, 255, 198, 0.4);
+  }
+
+  p {
+    margin-top: -6px;
+    color: #b6c2c2;
+    opacity: 0.85;
+  }
+}
+
+/* 💎 BOTÓN PRINCIPAL */
+ion-button {
+  margin: 15px;
+  border-radius: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  --background: linear-gradient(135deg, rgba(0, 255, 198, 0.25), rgba(0, 255, 198, 0.15));
+  --color: #00ffc6;
+  --border-color: rgba(0, 255, 198, 0.5);
+  --border-width: 1px;
+  --border-style: solid;
+  box-shadow: 0 0 12px rgba(0, 255, 198, 0.25);
+  transition: 0.25s ease;
+}
+
+ion-button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 18px rgba(0, 255, 198, 0.35);
+}
+
+/* 🟢 TITULO DE SECCIÓN */
+.section-title {
+  padding-left: 20px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+  color: #00ffc6;
+  font-weight: 600;
+  animation: fadeIn 0.5s ease;
+}
+
+/* 🔥 LISTA DE RESERVAS */
+ion-list {
+  background: transparent;
+}
+
+ion-item {
+  --background: rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  margin: 14px 18px;
+  padding: 10px;
+  border: 1px solid rgba(0, 255, 198, 0.2);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 8px rgba(0, 255, 198, 0.08);
+  transition: 0.25s ease;
+}
+
+ion-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 16px rgba(0, 255, 198, 0.2);
+  border-color: rgba(0, 255, 198, 0.5);
+}
+
+/* 🔷 ICONOS */
+ion-item ion-icon[slot="start"] {
+  font-size: 34px;
+  color: #00ffc6;
+  filter: drop-shadow(0 0 6px rgba(0, 255, 198, 0.4));
+}
+
+ion-icon[name="chevron-forward-outline"] {
+  color: #8b8b8b;
+  font-size: 22px;
+  transition: 0.2s ease;
+}
+
+ion-item:hover ion-icon[name="chevron-forward-outline"] {
+  color: #00ffc6;
+}
+
+/* 📝 TEXTO EN LA LISTA */
+ion-label h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+ion-label p {
+  font-size: 0.85rem;
+  color: #b7b7b7;
+}
+
+/* 🌘 MODALES */
+ion-modal {
+  --background: rgba(11, 20, 22, 0.85);
+  backdrop-filter: blur(10px);
+  --border-radius: 22px;
+  animation: fadeIn 0.4s ease;
+}
+
+/* 🛠 TOOLBAR DEL MODAL */
+ion-toolbar {
+  --background: #0b1416;
+  --color: #00ffc6;
+  border-bottom: 1px solid rgba(0, 255, 198, 0.25);
+  box-shadow: 0 0 8px rgba(0, 255, 198, 0.15);
+}
+
+/* 🎛 CAMPOS */
+ion-item {
+  --background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(0, 255, 198, 0.15);
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+/* ✨ BOTONES MODAL */
+ion-modal ion-button {
+  --background: rgba(0, 255, 198, 0.18);
+  --color: #00ffc6;
+  --border-color: rgba(0, 255, 198, 0.4);
+  --border-width: 1px;
+  --border-style: solid;
+  border-radius: 12px;
+  margin-top: 10px;
+  box-shadow: 0 0 12px rgba(0, 255, 198, 0.15);
+}
+
+ion-modal ion-button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 18px rgba(0, 255, 198, 0.3);
+}
+
+/* 🔥 OVERRIDE para que los ion-item NO tengan fondo gris */
+ion-item {
+  --background: transparent !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 18px !important;
+  margin: 14px 12px;
+  padding: 0px;
+  border: 1px solid rgba(0, 255, 198, 0.18);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 12px rgba(0, 255, 198, 0.1);
+  transition: 0.25s ease;
+}
+
+/* 🌟 HOVER */
+ion-item:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 255, 198, 0.5);
+  box-shadow: 0 0 20px rgba(0, 255, 198, 0.25);
+}
+
+/* 💠 QUITAR FONDO DEL ITEM NOBRE (ion-item wrapper) */
+ion-list {
+  background: transparent !important;
+}
+
+/* 🚫 Quitar el highlight gris cuando se presiona */
+ion-item::part(native) {
+  background: transparent !important;
+  border-radius: 18px;
+}
+
+/* 🔹 ÍCONO VEHÍCULO */
+ion-item ion-icon[slot="start"] {
+  color: #00ffc6;
+  font-size: 34px;
+  filter: drop-shadow(0 0 6px rgba(0, 255, 198, 0.4));
+}
+
+/* 🔹 CHEVRON */
+ion-icon[name="chevron-forward-outline"] {
+  color: #888;
+  transition: .2s ease;
+}
+
+ion-item:hover ion-icon[name="chevron-forward-outline"] {
+  color: #00ffc6;
+}
+
+.search-box {
+  padding: 0 20px;
+  margin-bottom: 15px;
+
+  ion-item {
+    --background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(6px);
+    border-radius: 14px;
+    --border-radius: 14px;
+    color: white;
+  }
+
+  ion-icon {
+    color: #00ffc6;
+    font-size: 20px;
+  }
+
+  ion-input {
+    color: #eaeaea;
+  }
+}
+
+/* 🔥 STATUS COLORES */
+.available {
+  color: #00ffc6;
+}
+
+.occupied {
+  color: #ffce00;
+}
+
+.disabled {
+  color: #ff5252;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

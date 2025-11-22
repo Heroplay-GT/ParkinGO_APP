@@ -1,13 +1,140 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>config-admin</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="config-page">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">config-admin</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+  <div class="header">
+    <h1>Configuration</h1>
+    <p>Manage parking spaces</p>
+  </div>
+
+  <!-- 🔹 Resumen visual -->
+  <ion-card class="summary-card">
+    <ion-card-header>
+      <ion-card-title>Current Configuration</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div class="summary-item">
+        <strong>Cars:</strong>
+        {{ summary.car.count }} spaces — {{ summary.car.price | currency:'COP' }}
+      </div>
+
+      <div class="summary-item">
+        <strong>Motorcycles:</strong>
+        {{ summary.moto.count }} spaces — {{ summary.moto.price | currency:'COP' }}
+      </div>
+
+      <div class="summary-item">
+        <strong>Bicycles:</strong>
+        {{ summary.bike.count }} spaces — {{ summary.bike.price | currency:'COP' }}
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" color="primary" (click)="openCreateConfig()">
+    <ion-icon name="settings-outline"></ion-icon>
+    &nbsp; Create Spaces Configuration
+  </ion-button>
+
+  <ion-button expand="block" color="danger" (click)="openDeleteModal()">
+    <ion-icon name="trash-outline"></ion-icon>
+    &nbsp; Delete All Spaces
+  </ion-button>
+
+
+  <!-- Modal -->
+  <ion-modal [isOpen]="showConfigModal" (didDismiss)="closeConfig()">
+    <ng-template>
+
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Create Parking Spaces</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeConfig()">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+
+        <form [formGroup]="configForm">
+
+          <h2>Car</h2>
+          <ion-item>
+            <ion-input type="number" placeholder="Number of spaces" formControlName="carCount"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="number" placeholder="Price per hour" formControlName="carPrice"></ion-input>
+          </ion-item>
+
+          <h2>Motorcycle</h2>
+          <ion-item>
+            <ion-input type="number" placeholder="Number of spaces" formControlName="motoCount"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="number" placeholder="Price per hour" formControlName="motoPrice"></ion-input>
+          </ion-item>
+
+          <h2>Bicycle</h2>
+          <ion-item>
+            <ion-input type="number" placeholder="Number of spaces" formControlName="bikeCount"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="number" placeholder="Price per hour" formControlName="bikePrice"></ion-input>
+          </ion-item>
+
+        </form>
+
+        <ion-button expand="block" color="success" (click)="createSpaces()">
+          <ion-icon name="save-outline"></ion-icon>
+          &nbsp; Generate Spaces
+        </ion-button>
+
+      </ion-content>
+
+    </ng-template>
+  </ion-modal>
+
+  <!-- 🔥 Modal para borrar TODOS los cubículos -->
+  <ion-modal [isOpen]="showDeleteModal" (didDismiss)="closeDeleteModal()">
+    <ng-template>
+
+      <ion-header translucent>
+        <ion-toolbar color="danger">
+          <ion-title>Delete All Spaces</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeDeleteModal()">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+
+        <h2 style="color:#fff; text-align:center;">
+          ⚠ This action is irreversible
+        </h2>
+        <p style="color:#aaa; text-align:center;">
+          Enter your password to continue. This will permanently delete ALL parking spaces.
+        </p>
+
+        <ion-item lines="none">
+          <ion-input type="password" placeholder="Admin password" [(ngModel)]="adminPassword">
+          </ion-input>
+        </ion-item>
+
+        <ion-button expand="block" color="danger" (click)="confirmDeleteSpaces()">
+          Confirm Delete
+        </ion-button>
+
+      </ion-content>
+
+    </ng-template>
+  </ion-modal>
+
+
+  <app-admin-submenu (navigate)="go($event)"></app-admin-submenu>
+
 </ion-content>

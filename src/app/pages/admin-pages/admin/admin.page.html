@@ -1,16 +1,108 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>admin</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="admin-page">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">admin</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  
-  <!-- admin submenu (bottom) -->
-  <app-admin-submenu (navigate)="onNav($event)"></app-admin-submenu>
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Active Vehicles</h1>
+    <p>Vehicles currently inside the parking lot</p>
+  </div>
+
+  <!-- SEARCH BAR -->
+  <ion-item class="search-box">
+    <ion-icon name="search-outline" slot="start"></ion-icon>
+    <ion-input placeholder="Search by plate" [(ngModel)]="searchPlate" (ionInput)="filterVehicles()">
+    </ion-input>
+  </ion-item>
+
+  <h2 class="section-title">Vehicles Inside</h2>
+
+  <!-- EMPTY LIST -->
+  <div *ngIf="filteredVehicles.length === 0" class="empty">
+    <ion-icon name="car-outline"></ion-icon>
+    <p>No active vehicles found</p>
+  </div>
+
+  <!-- VEHICLES LIST -->
+  <ion-list *ngIf="filteredVehicles.length > 0">
+    <ion-item-sliding *ngFor="let v of filteredVehicles">
+
+      <ion-item (click)="openDetails(v)" class="vehicle-item">
+        <ion-icon [name]="getVehicleIcon(v.vehicleType)" slot="start" class="vehicle-icon">
+        </ion-icon>
+
+        <ion-label>
+          <h2>{{ v.plate }} — {{ v.model }}</h2>
+          <p>Space: {{ v.space }}</p>
+          <p>Since: {{ v.entryTime.toDate() | date:'short' }}</p>
+        </ion-label>
+
+        <ion-icon name="chevron-forward-outline" class="arrow"></ion-icon>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option color="success" (click)="openDetails(v)">
+          <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+
+    </ion-item-sliding>
+  </ion-list>
+
+  <!-- MODAL -->
+  <ion-modal [isOpen]="showModal" (didDismiss)="closeDetails()">
+    <ng-template>
+
+      <ion-header translucent>
+        <ion-toolbar color="primary">
+          <ion-title>Vehicle Checkout</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeDetails()">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+        <div *ngIf="selectedVehicle">
+
+          <div class="modal-info">
+            <h2 class="plate">{{ selectedVehicle.plate }}</h2>
+
+            <p><strong>Model:</strong> {{ selectedVehicle.model }}</p>
+            <p><strong>Space:</strong> {{ selectedVehicle.space }}</p>
+            <p><strong>Entry Time:</strong> {{ selectedVehicle.entryTime.toDate() | date:'short' }}</p>
+
+            <div class="billing-card">
+              <h3>Billing Summary</h3>
+
+              <p>
+                <strong>Total Time:</strong>
+                {{ calculateHours(selectedVehicle.entryTime) }} hour(s)
+              </p>
+
+              <p>
+                <strong>Price/hour:</strong>
+                {{ selectedVehicle.pricePerHour | currency:'COP':'symbol' }}
+              </p>
+
+              <p class="total">
+                Total:
+                {{ calculateTotal(selectedVehicle) | currency:'COP':'symbol' }}
+              </p>
+
+            </div>
+          </div>
+
+          <ion-button expand="block" color="success" (click)="retirarVehiculo()">
+            <ion-icon name="log-out-outline"></ion-icon>
+            &nbsp; Confirm Checkout
+          </ion-button>
+
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <app-admin-submenu (navigate)="go($event)"></app-admin-submenu>
+
 </ion-content>

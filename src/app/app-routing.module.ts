@@ -57,13 +57,19 @@ const routes: Routes = [
     loadChildren: () => import('./pages/admin-pages/clients/clients.module').then( m => m.ClientsPageModule)
   },
   {
-    path: '**',
-    redirectTo: 'not-found',
-    pathMatch: 'full'
-  },  {
     path: 'config-admin',
     loadChildren: () => import('./pages/admin-pages/config-admin/config-admin.module').then( m => m.ConfigAdminPageModule)
   },
+  {
+    path: 'ingreso',
+    loadChildren: () => import('./pages/admin-pages/ingreso/ingreso.module').then( m => m.IngresoPageModule)
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found',
+    pathMatch: 'full'
+  },
+
 
 
 

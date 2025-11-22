@@ -82,7 +82,6 @@ export class ClientsPage implements OnInit {
     this.selectedClient = null;
   }
 
-
   async doLogOut() {
     await this.auth.logout();
     this.router.navigate(['/login-admin']);
@@ -96,13 +95,13 @@ export class ClientsPage implements OnInit {
         this.router.navigate(['/']);
         break;
       case 'ingreso':
-        this.router.navigate(['/']);
+        this.router.navigate(['/ingreso']);
         break;
       case 'retirar':
         this.router.navigate(['/admin']);
         break;
-      case 'config':
-        this.router.navigate(['/']);
+      case 'config-admin':
+        this.router.navigate(['/config-admin']);
         break;
       case 'logout':
         await this.doLogOut();

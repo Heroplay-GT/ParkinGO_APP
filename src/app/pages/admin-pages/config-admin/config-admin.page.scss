@@ -1,0 +1,143 @@
+.config-page {
+  --background: #0b1416;
+  color: #eaeaea;
+}
+
+.header {
+  text-align: center;
+  padding: 20px;
+}
+
+.actions {
+  padding: 0 20px;
+  margin-bottom: 10px;
+}
+
+.filters {
+  padding: 0 20px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+ion-select {
+  flex: 1;
+  --background: rgba(255, 255, 255, 0.08);
+  color: white;
+  border-radius: 12px;
+}
+
+.space-card {
+  margin: 15px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+}
+
+.space-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.available {
+  color: #00ffc6;
+}
+
+.occupied {
+  color: #ffae00;
+}
+
+.disabled {
+  color: #ff4444;
+}
+
+.config-page {
+  --background: #0b1416;
+  color: #eaeaea;
+}
+
+.header {
+  text-align: center;
+  padding: 20px;
+}
+
+.actions {
+  padding: 0 20px;
+}
+
+.filters {
+  padding: 15px;
+  display: flex;
+  gap: 10px;
+
+  ion-select {
+    flex: 1;
+    --background: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+  }
+}
+
+.space-card {
+  margin: 18px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 255, 198, 0.15);
+}
+
+.space-actions {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.available {
+  color: #00ffc6;
+}
+
+.occupied {
+  color: #ffce00;
+}
+
+.disabled {
+  color: #ff5252;
+}
+
+.config-page {
+  --background: #0b1416;
+  color: #eaeaea;
+}
+
+h2 {
+  margin-top: 18px;
+  color: #00ffc6;
+}
+
+ion-item {
+  margin-bottom: 10px;
+  --background: rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+}
+
+ion-button {
+  margin-top: 20px;
+}
+
+.summary-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(0, 255, 198, 0.2);
+  border-radius: 14px;
+  margin-bottom: 20px;
+  color: #eaeaea;
+}
+
+.summary-item {
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.config-page {
+  --background: #0b1416;
+  color: #fff;
+}
