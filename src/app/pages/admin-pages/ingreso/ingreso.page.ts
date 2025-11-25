@@ -205,4 +205,8 @@ export class IngresoPage implements OnInit {
       case 'logout': await this.doLogOut(); break;
     }
   }
+
+  refreshList() {
+    this.listenReservations?.();
+  }
 }

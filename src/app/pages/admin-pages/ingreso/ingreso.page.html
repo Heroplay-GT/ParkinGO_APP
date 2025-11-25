@@ -21,6 +21,11 @@
     </ion-item>
   </div>
 
+  <!-- REFRESH FLOATING BUTTON -->
+  <button class="floating-refresh" (click)="refreshList()">
+    <ion-icon name="refresh-outline"></ion-icon>
+  </button>
+
   <!-- Lista de reservas -->
   <ion-list>
     <ion-item *ngFor="let res of filteredReservations" (click)="openReservationActions(res)">

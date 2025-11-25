@@ -163,4 +163,8 @@ export class AdminPage implements OnInit {
       case 'logout': await this.doLogOut(); break;
     }
   }
+
+  refreshList() {
+    this.listenActiveVehicles();
+  }
 }

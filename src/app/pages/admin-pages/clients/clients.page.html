@@ -22,6 +22,11 @@
     </ion-select>
   </div>
 
+  <!-- REFRESH FLOATING BUTTON -->
+  <button class="floating-refresh" (click)="refreshList()">
+    <ion-icon name="refresh-outline"></ion-icon>
+  </button>
+
   <div *ngIf="loading" class="loading">
     <ion-spinner name="crescent"></ion-spinner>
   </div>

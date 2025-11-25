@@ -111,4 +111,8 @@ export class ClientsPage implements OnInit {
     }
   }
 
+  refreshList() {
+    this.loadClients?.();
+  }
+
 }

@@ -181,3 +181,44 @@ ion-item-option {
     color: #00ffc6;
   }
 }
+
+.ion-modal .modal-wrapper {
+  --background: #0b1416;
+}
+
+/* -------------------------------------- */
+/* 🔄 BOTÓN FLOTANTE CIRCULAR CLEAN NEON */
+/* -------------------------------------- */
+.floating-refresh {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 62px;
+  height: 62px;
+
+  border-radius: 50%;
+  border: 2px solid #00ffc6;
+  background: transparent;
+  /* SIN FONDO */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-shadow: 0 0 14px rgba(0, 255, 198, 0.45);
+  backdrop-filter: blur(6px);
+
+  cursor: pointer;
+  transition: 0.25s ease-in-out;
+  z-index: 9999;
+}
+
+.floating-refresh ion-icon {
+  font-size: 28px;
+  color: #00ffc6;
+}
+
+.floating-refresh:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 22px rgba(0, 255, 198, 0.8);
+}
