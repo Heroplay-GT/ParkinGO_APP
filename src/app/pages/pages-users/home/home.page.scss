@@ -122,3 +122,77 @@ ion-toolbar {
     transform: translateY(0);
   }
 }
+
+// Secret overlay animation
+.secret-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(5px);
+
+  &.active {
+    opacity: 1;
+  }
+
+  .secret-content {
+    text-align: center;
+    color: #fff;
+    animation: secretPulse 0.6s ease-in-out;
+
+    ion-icon {
+      font-size: 5rem;
+      color: #00d4ff;
+      margin-bottom: 1rem;
+      animation: secretBounce 0.8s ease-in-out;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem 0;
+      letter-spacing: 2px;
+      color: #00d4ff;
+      text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #aaa;
+      margin: 0;
+      font-style: italic;
+    }
+  }
+}
+
+@keyframes secretPulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes secretBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
