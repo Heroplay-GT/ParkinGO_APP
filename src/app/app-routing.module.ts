@@ -14,6 +14,11 @@ const isNotLogged = () => redirectUnauthorizedTo(['login']);
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
+  },
+  {
     path: 'home',
     loadChildren: () => import('./pages/pages-users/home/home.module').then(m => m.HomePageModule),
   },

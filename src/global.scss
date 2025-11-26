@@ -40,4 +40,15 @@ ion-content {
   --padding-bottom: 85px !important;
 }
 
+/* Barcode Scanner - Ocultar fondo cuando está activo */
+body.barcode-scanner-active {
+  visibility: hidden;
+  --background: transparent;
+  --ion-background-color: transparent;
+}
+
+.barcode-scanner-modal {
+  visibility: visible;
+}
+
 

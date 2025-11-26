@@ -42,26 +42,44 @@ export class RegisterPage implements OnInit {
   }
 
   async onSubmit() {
-    if (this.registerForm.invalid) return;
-
-    const { password, confirmPassword } = this.registerForm.value;
-    if (password !== confirmPassword) {
-      alert('Passwords do not match');
+    if (this.registerForm.invalid) {
+      this.showToast('Please fill all fields correctly', 'warning');
       return;
     }
 
-    const uid = await this.authSrv.register(
-      this.registerForm.value.email,
-      this.registerForm.value.password,
-      this.registerForm.value.phoneNumber,
-      this.registerForm.value.name,
+    const { password, confirmPassword } = this.registerForm.value;
+    if (password !== confirmPassword) {
+      this.showToast('Passwords do not match', 'warning');
+      return;
+    }
 
-    );
+    try {
+      const uid = await this.authSrv.register(
+        this.registerForm.value.email,
+        this.registerForm.value.password,
+        this.registerForm.value.phoneNumber,
+        this.registerForm.value.name,
+      );
 
-    this.router.navigate(['/login']);
+      this.showToast('Registration successful! Please verify your email.', 'success');
+      this.router.navigate(['/login']);
+    } catch (error: any) {
+      console.error('Registration error:', error);
+      this.showToast(error.message || 'Registration failed', 'danger');
+    }
   }
 
   goToLogin() {
     this.router.navigate(['/login']);
+  }
+
+  showToast(message: string, color: string) {
+    const toast: any = document.createElement('ion-toast');
+    toast.message = message;
+    toast.color = color;
+    toast.duration = 3000;
+    toast.position = 'top';
+    document.body.appendChild(toast);
+    toast.present();
   }
 }

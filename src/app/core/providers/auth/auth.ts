@@ -26,22 +26,35 @@ export class Auth {
 
   // Register a new user with email and password
 async register(email: string, password: string, phoneNumber: string, name: string): Promise<string> {
-  const response = await createUserWithEmailAndPassword(this.afb, email, password);
+  try {
+    const response = await createUserWithEmailAndPassword(this.afb, email, password);
 
-  await sendEmailVerification(response.user);
+    await sendEmailVerification(response.user);
 
-  const userRef = doc(this.db, 'users', response.user.uid);
-  await setDoc(userRef, {
-    uid: response.user.uid,
-    email,
-    name,
-    phoneNumber,
-    role: 'user',
-    createdAt: new Date(),
-    provider: 'email'
-  });
+    const userRef = doc(this.db, 'users', response.user.uid);
+    await setDoc(userRef, {
+      uid: response.user.uid,
+      email,
+      name,
+      phoneNumber,
+      role: 'user',
+      createdAt: new Date(),
+      provider: 'email'
+    });
 
-  return response.user.uid;
+    return response.user.uid;
+  } catch (error: any) {
+    console.error('Error registering user:', error.message);
+    let errorMessage = 'Registration failed';
+    if (error.code === 'auth/email-already-in-use') {
+      errorMessage = 'Email already in use';
+    } else if (error.code === 'auth/invalid-email') {
+      errorMessage = 'Invalid email address';
+    } else if (error.code === 'auth/weak-password') {
+      errorMessage = 'Password is too weak';
+    }
+    throw new Error(errorMessage);
+  }
 }
 
   // login an existing user with email and password
@@ -52,8 +65,19 @@ async register(email: string, password: string, phoneNumber: string, name: strin
         email,
         password);
       console.log('User logged in successfully:', response);
-    } catch (error) {
-      console.error('Error logging in user:', (error as any).message);
+    } catch (error: any) {
+      console.error('Error logging in user:', error.message);
+      let errorMessage = 'Login failed';
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = 'User not found';
+      } else if (error.code === 'auth/wrong-password') {
+        errorMessage = 'Incorrect password';
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'Invalid email address';
+      } else if (error.code === 'auth/invalid-credential') {
+        errorMessage = 'Invalid email or password';
+      }
+      throw new Error(errorMessage);
     }
   }
 
@@ -89,8 +113,15 @@ async register(email: string, password: string, phoneNumber: string, name: strin
 
       console.log('User logged in with Google successfully:', response);
 
-    } catch (error) {
-      console.error('Error logging in with Google:', (error as any).message);
+    } catch (error: any) {
+      console.error('Error logging in with Google:', error.message);
+      let errorMessage = 'Google login failed';
+      if (error.code === 'auth/popup-closed-by-user') {
+        errorMessage = 'Login cancelled';
+      } else if (error.code === 'auth/popup-blocked') {
+        errorMessage = 'Popup blocked by browser';
+      }
+      throw new Error(errorMessage);
     }
   }
 

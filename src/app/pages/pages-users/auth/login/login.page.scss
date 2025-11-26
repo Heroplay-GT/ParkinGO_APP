@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
   color: #eaeaea;
   font-family: 'Poppins', sans-serif;
 }
@@ -11,7 +11,7 @@
 .bg-gradient {
   width: 100%;
   max-width: 400px;
-  padding: 40px 25px;
+  padding: 25px 25px 20px;
   border-radius: 16px;
   background: radial-gradient(circle at 30% 20%, #0f2027, #091416);
   box-shadow: 0 0 25px rgba(0, 255, 198, 0.08);
@@ -21,7 +21,7 @@
 
 /* ---------- BRAND ---------- */
 .brand {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .logo {
@@ -61,7 +61,7 @@
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 }
 
 app-input {
@@ -156,12 +156,26 @@ app-link:hover {
 .terms {
   font-size: 0.75rem;
   color: #888;
-  margin-top: 25px;
+  margin-top: 10px;
   line-height: 1.4;
 }
 
 .terms strong {
   color: #00ffc6;
+}
+
+/* ---------- ADMIN LINK ---------- */
+.admin-link {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: #00ffc6;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #00bfa5;
+  }
 }
 
 /* ---------- ANIMATIONS ---------- */

@@ -37,15 +37,27 @@ export class LoginPage implements OnInit {
   }
 
   async onSubmit() {
-    if (this.loginForm.invalid) return;
+    if (this.loginForm.invalid) {
+      this.showToast('Please fill all fields correctly', 'warning');
+      return;
+    }
 
-    await this.authSrv.login(this.loginForm.value.email, this.loginForm.value.password);
-
-    this.router.navigate(['/index']);
+    try {
+      await this.authSrv.login(this.loginForm.value.email, this.loginForm.value.password);
+      this.showToast('Login successful!', 'success');
+      this.router.navigate(['/index']);
+    } catch (error: any) {
+      console.error('Login error:', error);
+      this.showToast(error.message || 'Login failed', 'danger');
+    }
   }
 
   goToRegister() {
     this.router.navigate(['/register']);
+  }
+
+  goToAdminLogin() {
+    this.router.navigate(['/login-admin']);
   }
 
   ionViewWillLeave() {
@@ -53,8 +65,23 @@ export class LoginPage implements OnInit {
   }
 
   async onGoogleLogin() {
-    await this.authSrv.loginWithGoogle();
+    try {
+      await this.authSrv.loginWithGoogle();
+      this.showToast('Login with Google successful!', 'success');
+      this.router.navigate(['/index']);
+    } catch (error: any) {
+      console.error('Google login error:', error);
+      this.showToast(error.message || 'Google login failed', 'danger');
+    }
+  }
 
-    this.router.navigate(['/index']);
+  showToast(message: string, color: string) {
+    const toast: any = document.createElement('ion-toast');
+    toast.message = message;
+    toast.color = color;
+    toast.duration = 3000;
+    toast.position = 'top';
+    document.body.appendChild(toast);
+    toast.present();
   }
 }

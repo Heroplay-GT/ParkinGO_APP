@@ -1,4 +1,4 @@
-<ion-content class="login-page">
+<ion-content class="login-page" fullscreen="true">
   <div class="bg-gradient">
     <div class="brand">
       <div class="logo" aria-hidden="true">
@@ -57,6 +57,10 @@
       </div>
 
       <p class="terms">By logging in, you agree to our <strong>Terms and Conditions</strong></p>
+
+      <div class="admin-link" (click)="goToAdminLogin()">
+        Access as Administrator
+      </div>
     </form>
   </div>
 </ion-content>

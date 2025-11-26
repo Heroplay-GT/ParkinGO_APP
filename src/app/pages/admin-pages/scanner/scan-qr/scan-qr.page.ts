@@ -58,9 +58,13 @@ export class ScanQrPage implements OnDestroy {
       this.videoStream = null;
     }
 
-    // Solo llamar stopScan si es nativo
+    // Detener escanner nativo y restaurar fondo
     if (this.isNative) {
-      try { (BarcodeScanner as any).stopScan?.(); } catch { }
+      try {
+        BarcodeScanner.stopScan();
+        BarcodeScanner.removeAllListeners();
+        document.body.classList.remove('barcode-scanner-active');
+      } catch { }
     }
   }
 
@@ -69,29 +73,35 @@ export class ScanQrPage implements OnDestroy {
   // ----------------------------------------
   async scanNative() {
     try {
-      const bc = BarcodeScanner as any;
-      const perm = await bc.requestPermissions();
-      if (!perm || perm.camera !== 'granted') {
-        this.showToast('Camera permission denied', 'danger');
-        return;
+      const granted = await BarcodeScanner.checkPermissions();
+      if (granted.camera !== 'granted') {
+        const requested = await BarcodeScanner.requestPermissions();
+        if (requested.camera !== 'granted') {
+          this.showToast('Camera permission denied', 'danger');
+          this.scanning = false;
+          return;
+        }
       }
 
-      // startScan may be callback-based or promise-based depending on plugin version;
-      // call it safely as any and handle results in the callback.
-      bc.startScan(
-        { formats: ['qr_code'] },
-        async (result: any) => {
+      // Ocultar el fondo de la web
+      document.body.classList.add('barcode-scanner-active');
+
+      const listener = await BarcodeScanner.addListener(
+        'barcodesScanned',
+        async (result) => {
           if (!this.scanning) return;
-          if (result?.barcodes?.length > 0) {
-            const raw = result.barcodes[0].rawValue;
-            await this.processQR(raw);
+          if (result.barcodes && result.barcodes.length > 0) {
+            await this.processQR(result.barcodes[0].displayValue);
           }
         }
       );
 
+      await BarcodeScanner.startScan();
+
     } catch (err) {
       console.error(err);
       this.showToast('Native scanner error', 'danger');
+      this.scanning = false;
     }
   }
 
