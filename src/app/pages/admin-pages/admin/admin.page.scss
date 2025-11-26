@@ -222,3 +222,53 @@ ion-item-option {
   transform: scale(1.12);
   box-shadow: 0 0 22px rgba(0, 255, 198, 0.8);
 }
+
+/* ===========================
+   BOTÓN QR (Circular Glass)
+   =========================== */
+.scan-btn {
+  --background: rgba(255, 255, 255, 0.04);
+  --color: #00ffc6;
+  --border-radius: 50%;
+  --border-width: 1px;
+  --border-color: rgba(0, 255, 198, 0.35);
+
+  width: 56px;
+  height: 56px;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 700;
+  backdrop-filter: blur(8px);
+
+  ion-icon {
+    font-size: 24px;
+    color: #00ffc6;
+  }
+
+  &:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(0, 255, 198, 0.25);
+  }
+}
+
+/* Quitar fondo feo por defecto de IonButton */
+ion-button::part(native) {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.action-row {
+  background: transparent;
+  padding: 0;
+}
+
+.actions-row {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  align-items: center;
+}

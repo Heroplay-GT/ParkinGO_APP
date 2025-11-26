@@ -92,7 +92,7 @@ export class ClientsPage implements OnInit {
     switch (route) {
 
       case 'reportes':
-        this.router.navigate(['/']);
+        this.router.navigate(['/reports']);
         break;
       case 'ingreso':
         this.router.navigate(['/ingreso']);

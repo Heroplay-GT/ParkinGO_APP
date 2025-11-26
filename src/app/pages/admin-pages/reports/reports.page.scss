@@ -1,0 +1,169 @@
+.reports-container {
+  margin-top: 1rem;
+}
+
+// ----------------------------------------
+// KPI CARDS
+// ----------------------------------------
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.kpi-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f5f7fa 0%, #fff 100%);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  ion-card-header {
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(135deg, #3880ff 0%, #00d4ff 100%);
+  }
+
+  ion-card-content {
+    text-align: center;
+    padding: 1rem;
+
+    .kpi-label {
+      font-size: 0.85rem;
+      color: #666;
+      margin: 0 0 0.5rem 0;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .kpi-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 0;
+    }
+  }
+
+  .kpi-icon {
+    font-size: 2rem;
+    color: #fff;
+  }
+}
+
+// ----------------------------------------
+// CHARTS
+// ----------------------------------------
+.charts-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.chart-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  background: #fff;
+
+  ion-card-header {
+    background: linear-gradient(135deg, #3880ff 0%, #00d4ff 100%);
+    padding: 1rem;
+
+    ion-card-title {
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+  }
+
+  ion-card-content {
+    padding: 1.5rem;
+    position: relative;
+    height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    canvas {
+      max-height: 100%;
+      max-width: 100%;
+    }
+  }
+}
+
+.chart-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  canvas {
+    max-width: 80%;
+    max-height: 80%;
+  }
+}
+
+// ----------------------------------------
+// LOADING
+// ----------------------------------------
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  gap: 1rem;
+
+  p {
+    color: #666;
+    font-weight: 500;
+  }
+}
+
+// ----------------------------------------
+// ACTION BUTTONS
+// ----------------------------------------
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+// ----------------------------------------
+// RESPONSIVE
+// ----------------------------------------
+@media (max-width: 768px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .charts-section {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-card ion-card-content {
+    height: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-card ion-card-content .kpi-value {
+    font-size: 1.4rem;
+  }
+}

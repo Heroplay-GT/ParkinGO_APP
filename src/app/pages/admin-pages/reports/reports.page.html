@@ -1,0 +1,123 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Reports & Analytics</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="refreshReports()">
+        <ion-icon slot="icon-only" name="refresh"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- LOADING -->
+  <div *ngIf="loading" class="loading-container">
+    <ion-spinner color="primary"></ion-spinner>
+    <p>Loading analytics...</p>
+  </div>
+
+  <!-- CONTENT -->
+  <div *ngIf="!loading" class="reports-container">
+
+    <!-- KPI CARDS -->
+    <div class="kpi-grid">
+      <ion-card class="kpi-card">
+        <ion-card-header>
+          <ion-icon name="car" class="kpi-icon"></ion-icon>
+        </ion-card-header>
+        <ion-card-content>
+          <p class="kpi-label">Total Reservations</p>
+          <p class="kpi-value">{{ reportData.totalReservations }}</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="kpi-card">
+        <ion-card-header>
+          <ion-icon name="cash" class="kpi-icon"></ion-icon>
+        </ion-card-header>
+        <ion-card-content>
+          <p class="kpi-label">Total Revenue</p>
+          <p class="kpi-value">${{ (reportData.totalRevenue | number: '1.0-0') }}</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="kpi-card">
+        <ion-card-header>
+          <ion-icon name="time" class="kpi-icon"></ion-icon>
+        </ion-card-header>
+        <ion-card-content>
+          <p class="kpi-label">Avg. Stay</p>
+          <p class="kpi-value">{{ reportData.averageStay }}h</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="kpi-card">
+        <ion-card-header>
+          <ion-icon name="locate" class="kpi-icon"></ion-icon>
+        </ion-card-header>
+        <ion-card-content>
+          <p class="kpi-label">Space Occupancy</p>
+          <p class="kpi-value">{{ reportData.occupiedSpaces }}/{{ reportData.totalSpaces }}</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- CHARTS SECTION -->
+    <div class="charts-section">
+      <!-- Revenue Chart -->
+      <ion-card class="chart-card">
+        <ion-card-header>
+          <ion-card-title>Daily Revenue Trend</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <canvas id="revenueChart"></canvas>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Top Vehicles -->
+      <ion-card class="chart-card">
+        <ion-card-header>
+          <ion-card-title>Top Vehicles</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <canvas id="vehicleChart"></canvas>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Space Occupancy -->
+      <ion-card class="chart-card">
+        <ion-card-header>
+          <ion-card-title>Space Occupancy</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="chart-wrapper">
+            <canvas id="spacesChart"></canvas>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Vehicle Types -->
+      <ion-card class="chart-card">
+        <ion-card-header>
+          <ion-card-title>Vehicle Types Distribution</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="chart-wrapper">
+            <canvas id="typesChart"></canvas>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="action-buttons">
+      <ion-button expand="block" color="primary" (click)="exportToCSV()">
+        <ion-icon slot="start" name="download"></ion-icon>
+        Export Report
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

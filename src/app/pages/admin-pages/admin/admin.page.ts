@@ -158,6 +158,7 @@ export class AdminPage implements OnInit {
   async go(route: string) {
     switch (route) {
       case 'clients': this.router.navigate(['/clients']); break;
+      case 'reportes': this.router.navigate(['/reports']); break;
       case 'ingreso': this.router.navigate(['/ingreso']); break;
       case 'config-admin': this.router.navigate(['/config-admin']); break;
       case 'logout': await this.doLogOut(); break;
@@ -166,5 +167,9 @@ export class AdminPage implements OnInit {
 
   refreshList() {
     this.listenActiveVehicles();
+  }
+
+  openScannerPage() {
+    this.router.navigate(['scan-qr-salida']);
   }
 }

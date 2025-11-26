@@ -279,3 +279,162 @@ ion-item:hover ion-icon[name="chevron-forward-outline"] {
     transform: translateY(0);
   }
 }
+
+/* ---------- Action row (two buttons) ---------- */
+.action-row {
+  display: flex;
+  gap: 12px;
+  margin: 18px;
+}
+
+/* Siempre que uses ion-button dentro, mejor controlar la parte nativa */
+.action-row ion-button {
+  --padding-start: 14px;
+  --padding-end: 14px;
+  height: 54px;
+  border-radius: 14px;
+  overflow: hidden;
+  /* evita esquinas cuadradas saliendo del border-radius */
+  --box-shadow: none;
+  --border-width: 0;
+}
+
+/* Elimina fondo gris cuadrado: aplica al "native part" */
+.action-row ion-button::part(native) {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ---------- Scan button (left) — circular-ish icon + compact ---------- */
+.scan-btn {
+  flex: 0 0 60px;
+  /* ancho fijo (círculo) */
+  min-width: 60px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  /* estilo glassy */
+  --background: transparent;
+  background: radial-gradient(circle at 30% 30%, rgba(0, 255, 198, 0.06), rgba(0, 0, 0, 0));
+  border-radius: 50%;
+  border: 1px solid rgba(0, 255, 198, 0.15);
+  box-shadow: 0 6px 16px rgba(0, 255, 198, 0.08);
+  color: #00ffc6;
+  font-weight: 700;
+}
+
+.scan-btn ion-icon {
+  font-size: 22px;
+  color: #00ffc6;
+}
+
+/* ---------- Enter manual button (right) ---------- */
+.enter-manual-btn {
+  flex: 1;
+  /* ocupa el espacio restante */
+  --background: linear-gradient(90deg, rgba(0, 255, 198, 0.08), rgba(0, 191, 165, 0.06));
+  background: linear-gradient(90deg, rgba(0, 255, 198, 0.05), rgba(0, 191, 165, 0.03));
+  border-radius: 14px;
+  border: 1px solid rgba(0, 255, 198, 0.12);
+  box-shadow: 0 8px 20px rgba(0, 255, 198, 0.06);
+  color: #e9fff7;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.enter-manual-btn ion-icon {
+  margin-right: 6px;
+  color: #00ffc6;
+}
+
+/* Hover / active */
+.enter-manual-btn:hover,
+.scan-btn:hover {
+  transform: translateY(-3px);
+  transition: 180ms ease;
+  box-shadow: 0 14px 30px rgba(0, 255, 198, 0.12);
+}
+
+/* Para evitar cualquier 'caja' sobrante del host */
+.action-row {
+  background: transparent;
+  padding: 0;
+}
+
+.actions-row {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+/* ===========================
+   BOTÓN PRINCIPAL (ENTER VEHICLE)
+   =========================== */
+.manual-btn {
+  --background: rgba(255, 255, 255, 0.05);
+  --color: #ffffff;
+  --border-radius: 18px;
+  --border-width: 1px;
+  --border-color: rgba(0, 255, 198, 0.28);
+  --padding-start: 18px;
+  --padding-end: 18px;
+
+  font-weight: 700;
+  font-size: 14px;
+  height: 52px;
+
+  backdrop-filter: blur(8px);
+  transition: 0.25s;
+
+  ion-icon {
+    font-size: 18px;
+    color: #00ffc6;
+  }
+
+  &:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 16px rgba(0, 255, 198, 0.25);
+  }
+}
+
+/* ===========================
+   BOTÓN QR (Circular Glass)
+   =========================== */
+.scan-btn {
+  --background: rgba(255, 255, 255, 0.04);
+  --color: #00ffc6;
+  --border-radius: 50%;
+  --border-width: 1px;
+  --border-color: rgba(0, 255, 198, 0.35);
+
+  width: 56px;
+  height: 56px;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 700;
+  backdrop-filter: blur(8px);
+
+  ion-icon {
+    font-size: 24px;
+    color: #00ffc6;
+  }
+
+  &:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(0, 255, 198, 0.25);
+  }
+}
+
+/* Quitar fondo feo por defecto de IonButton */
+ion-button::part(native) {
+  background: transparent !important;
+  box-shadow: none !important;
+}

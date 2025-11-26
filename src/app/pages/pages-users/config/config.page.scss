@@ -5,12 +5,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 .settings-container {
-  width: 100%;
-  max-width: 420px;
+  width: 90%;
+  /* Usa un 90% del ancho del viewport por defecto */
+  max-width: 400px;
+  /* Mantén un límite para móviles (o un poco menos) */
   margin: 40px auto;
   padding: 35px 20px;
   border-radius: 20px;
@@ -18,6 +19,26 @@
   box-shadow: 0 0 20px rgba(0, 255, 198, 0.15);
   text-align: center;
   animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Media Query para Tabletas y Dispositivos de Ancho Medio (ej. > 600px) */
+@media (min-width: 600px) {
+  .settings-container {
+    width: 80%;
+    /* Ocupa el 80% del ancho del viewport */
+    max-width: 600px;
+    /* Limita el ancho máximo a 600px en tabletas */
+    padding: 40px 30px;
+    /* Un poco más de padding */
+  }
+}
+
+/* Media Query para Escritorios (opcional, para dispositivos muy grandes) */
+@media (min-width: 1024px) {
+  .settings-container {
+    max-width: 700px;
+    /* Un límite un poco más grande para pantallas muy amplias */
+  }
 }
 
 .logo {
@@ -120,7 +141,8 @@
 
 ion-button.btn-option {
   --background: linear-gradient(90deg, #00ffc6, #00bfa5);
-  --border-radius: 50px; /* más redondeado */
+  --border-radius: 50px;
+  /* más redondeado */
   --box-shadow: none;
   --padding-start: 16px;
   --padding-end: 16px;
@@ -154,6 +176,7 @@ ion-button.btn-option {
     opacity: 0;
     transform: translateY(15px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

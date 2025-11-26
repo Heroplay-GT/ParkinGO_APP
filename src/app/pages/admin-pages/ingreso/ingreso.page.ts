@@ -200,6 +200,7 @@ export class IngresoPage implements OnInit {
   async go(route: string) {
     switch (route) {
       case 'clients': this.router.navigate(['/clients']); break;
+      case 'reportes': this.router.navigate(['/reports']); break;
       case 'retirar': this.router.navigate(['/admin']); break;
       case 'config-admin': this.router.navigate(['/config-admin']); break;
       case 'logout': await this.doLogOut(); break;
@@ -208,5 +209,9 @@ export class IngresoPage implements OnInit {
 
   refreshList() {
     this.listenReservations?.();
+  }
+
+  openScannerPage() {
+    this.router.navigate(['scan-qr']);
   }
 }

@@ -6,12 +6,20 @@
     <p>Vehicles currently inside the parking lot</p>
   </div>
 
-  <!-- SEARCH BAR -->
-  <ion-item class="search-box">
-    <ion-icon name="search-outline" slot="start"></ion-icon>
-    <ion-input placeholder="Search by plate" [(ngModel)]="searchPlate" (ionInput)="filterVehicles()">
-    </ion-input>
-  </ion-item>
+  <div class="actions-row">
+
+    <!-- SEARCH BAR -->
+    <ion-item class="search-box">
+      <ion-icon name="search-outline" slot="start"></ion-icon>
+      <ion-input placeholder="Search by plate" [(ngModel)]="searchPlate" (ionInput)="filterVehicles()">
+      </ion-input>
+    </ion-item>
+
+    <ion-button class="scan-btn" (click)="openScannerPage()">
+      <ion-icon name="qr-code-outline"></ion-icon>
+    </ion-button>
+
+  </div>
 
   <!-- REFRESH FLOATING BUTTON -->
   <button class="floating-refresh" (click)="refreshList()">

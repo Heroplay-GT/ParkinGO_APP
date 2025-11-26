@@ -5,11 +5,20 @@
     <p>Manage incoming vehicles</p>
   </div>
 
-  <!-- Botón para ingreso SIN reserva -->
-  <ion-button expand="block" color="primary" (click)="openManualEntryModal()">
-    <ion-icon name="add-circle-outline"></ion-icon>
-    &nbsp; Enter Vehicle Without Reservation
-  </ion-button>
+  <div class="actions-row">
+
+    <!-- Botón Scan QR -->
+    <ion-button class="scan-btn" (click)="openScannerPage()">
+      <ion-icon name="qr-code-outline"></ion-icon>
+    </ion-button>
+
+    <!-- Botón ingresar sin reserva -->
+    <ion-button class="manual-btn" (click)="openManualEntryModal()">
+      <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+      Enter Vehicle Without Reservation
+    </ion-button>
+
+  </div>
 
   <h2 class="section-title">Pending Reservations</h2>
 
