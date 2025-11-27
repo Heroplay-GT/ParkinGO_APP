@@ -56,10 +56,6 @@ export class LoginPage implements OnInit {
     this.router.navigate(['/register']);
   }
 
-  goToAdminLogin() {
-    this.router.navigate(['/login-admin']);
-  }
-
   ionViewWillLeave() {
     this.loginForm.reset();
   }
