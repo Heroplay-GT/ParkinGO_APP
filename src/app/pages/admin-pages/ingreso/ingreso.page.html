@@ -87,52 +87,49 @@
 
   <!-- MODAL PARA INGRESAR VEHÍCULO SIN RESERVA -->
   <ion-modal [isOpen]="showManualEntryModal" (didDismiss)="closeManualEntryModal()">
-    <ng-template>
-      <ion-header translucent>
-        <ion-toolbar color="primary">
-          <ion-title>Manual Entry</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="closeManualEntryModal()">
-              <ion-icon name="close-outline"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
+    <ion-header translucent>
+      <ion-toolbar color="primary">
+        <ion-title>Manual Entry</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeManualEntryModal()">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
 
-      <ion-content class="ion-padding">
+    <ion-content class="ion-padding">
 
-        <ion-item>
-          <ion-select placeholder="Vehicle Type" [(ngModel)]="manual.type">
-            <ion-select-option value="Car">Car</ion-select-option>
-            <ion-select-option value="Motorcycle">Motorcycle</ion-select-option>
-            <ion-select-option value="Bicycle">Bicycle</ion-select-option>
-          </ion-select>
-        </ion-item>
+      <ion-item>
+        <ion-select placeholder="Vehicle Type" [(ngModel)]="manual.type">
+          <ion-select-option value="Car">Car</ion-select-option>
+          <ion-select-option value="Motorcycle">Motorcycle</ion-select-option>
+          <ion-select-option value="Bicycle">Bicycle</ion-select-option>
+        </ion-select>
+      </ion-item>
 
-        <ion-item>
-          <ion-input placeholder="Plate" [(ngModel)]="manual.plate"></ion-input>
-        </ion-item>
+      <ion-item>
+        <ion-input placeholder="Plate" [(ngModel)]="manual.plate"></ion-input>
+      </ion-item>
 
-        <ion-item>
-          <ion-input placeholder="Model" [(ngModel)]="manual.model"></ion-input>
-        </ion-item>
+      <ion-item>
+        <ion-input placeholder="Model" [(ngModel)]="manual.model"></ion-input>
+      </ion-item>
 
-        <ion-item>
-          <ion-select placeholder="Space" [(ngModel)]="manual.space">
-            <ion-select-option *ngFor="let s of availableSpaces" [value]="s.code">
-              {{ s.code }} ({{ s.pricePerHour | currency:'COP' }})
-            </ion-select-option>
-          </ion-select>
-        </ion-item>
+      <ion-item>
+        <ion-select placeholder="Space" [(ngModel)]="manual.space">
+          <ion-select-option *ngFor="let s of availableSpaces" [value]="s.code">
+            {{ s.code }} ({{ s.pricePerHour | currency:'COP' }})
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
 
-        <ion-button expand="block" color="success" (click)="createManualEntry()">
-          <ion-icon name="log-in-outline"></ion-icon>
-          &nbsp; Confirm Entry
-        </ion-button>
+      <ion-button expand="block" color="success" (click)="createManualEntry()">
+        <ion-icon name="log-in-outline"></ion-icon>
+        &nbsp; Confirm Entry
+      </ion-button>
 
-      </ion-content>
-
-    </ng-template>
+    </ion-content>
   </ion-modal>
 
   <app-admin-submenu (navigate)="go($event)"></app-admin-submenu>
