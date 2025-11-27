@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { Capacitor } from '@capacitor/core';
 import { BrowserMultiFormatReader } from '@zxing/browser';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-scan-qr-salida',
@@ -21,7 +22,8 @@ export class ScanQrSalidaPage implements OnDestroy {
 
   constructor(
     private firestore: Firestore,
-    private router: Router
+    private router: Router,
+    private toastController: ToastController
   ) { }
 
   ngOnDestroy() {
@@ -32,6 +34,10 @@ export class ScanQrSalidaPage implements OnDestroy {
   // START SCAN
   // ----------------------------------------
   async startScan() {
+    console.log('startScan called');
+    console.log('isNative:', this.isNative);
+    console.log('Platform:', Capacitor.getPlatform());
+    
     this.scanning = true;
 
     if (this.isNative) {
@@ -57,9 +63,13 @@ export class ScanQrSalidaPage implements OnDestroy {
       this.videoStream = null;
     }
 
-    // Solo llamar stopScan si es nativo
+    // Detener escanner nativo y restaurar fondo
     if (this.isNative) {
-      try { (BarcodeScanner as any).stopScan?.(); } catch { }
+      try {
+        BarcodeScanner.stopScan();
+        BarcodeScanner.removeAllListeners();
+        document.body.classList.remove('barcode-scanner-active');
+      } catch { }
     }
   }
 
@@ -68,27 +78,65 @@ export class ScanQrSalidaPage implements OnDestroy {
   // ----------------------------------------
   async scanNative() {
     try {
-      const bc = BarcodeScanner as any;
-      const perm = await bc.requestPermissions();
-      if (!perm || perm.camera !== 'granted') {
-        this.showToast('Se necesitan permisos de cámara', 'danger');
-        return;
+      console.log('scanNative started');
+      
+      // Verificar permisos
+      console.log('Checking permissions...');
+      const granted = await BarcodeScanner.checkPermissions();
+      console.log('Permissions result:', granted);
+      
+      if (granted.camera !== 'granted') {
+        console.log('Requesting permissions...');
+        const requested = await BarcodeScanner.requestPermissions();
+        console.log('Request result:', requested);
+        
+        if (requested.camera !== 'granted') {
+          this.showToast('Se necesitan permisos de cámara', 'danger');
+          this.scanning = false;
+          return;
+        }
       }
 
-      bc.startScan(
-        { formats: ['qr_code'] },
-        async (result: any) => {
-          if (!this.scanning) return;
-          if (result?.barcodes?.length > 0) {
-            const raw = result.barcodes[0].rawValue;
-            await this.processQR(raw);
+      console.log('Permissions granted, starting scan...');
+      
+      // Ocultar el fondo de la web
+      document.body.classList.add('barcode-scanner-active');
+
+      // Agregar listener para los códigos escaneados
+      console.log('Adding barcodesScanned listener...');
+      const listener = await BarcodeScanner.addListener(
+        'barcodesScanned',
+        async (result) => {
+          console.log('🔍 SALIDA - Barcode detected:', result);
+          console.log('🔍 SALIDA - Barcodes array:', result.barcodes);
+          console.log('🔍 SALIDA - Scanning state:', this.scanning);
+          
+          if (!this.scanning) {
+            console.log('⚠️ SALIDA - Not scanning, ignoring');
+            return;
+          }
+          
+          if (result.barcodes && result.barcodes.length > 0) {
+            const code = result.barcodes[0].displayValue;
+            console.log('✅ SALIDA - Processing code:', code);
+            await this.processQR(code);
+          } else {
+            console.log('⚠️ SALIDA - No barcodes in result');
           }
         }
       );
+      console.log('Listener added successfully');
+
+      // Iniciar el escaneo
+      console.log('Calling BarcodeScanner.startScan()...');
+      await BarcodeScanner.startScan();
+      console.log('Scanner started successfully');
 
     } catch (err) {
-      console.error(err);
-      this.showToast('Error al iniciar el escáner', 'danger');
+      console.error('Error en scanNative:', err);
+      this.showToast('Error al iniciar el escáner: ' + (err as any).message, 'danger');
+      this.scanning = false;
+      document.body.classList.remove('barcode-scanner-active');
     }
   }
 
@@ -135,15 +183,20 @@ export class ScanQrSalidaPage implements OnDestroy {
   // PROCESS QR - LÓGICA DE RETIRO
   // ----------------------------------------
   async processQR(raw: string) {
+    console.log('🚀 SALIDA - processQR called with:', raw);
     this.stopScan();
+    console.log('🚀 SALIDA - Scanner stopped');
 
     try {
       if (!raw) {
+        console.log('❌ SALIDA - Empty QR');
         this.showToast('QR vacío', 'warning');
         return;
       }
 
+      console.log('🚀 SALIDA - Parsing JSON...');
       const data = JSON.parse(raw);
+      console.log('🚀 SALIDA - Parsed data:', data);
       const reservationId = data.id;
 
       if (!reservationId) {
@@ -244,17 +297,14 @@ export class ScanQrSalidaPage implements OnDestroy {
   // ----------------------------------------
   // TOAST
   // ----------------------------------------
-  private showToast(message: string, color: string) {
-    try {
-      const toast = document.createElement('ion-toast') as any;
-      toast.message = message;
-      toast.color = color;
-      toast.duration = 2500;
-      document.body.appendChild(toast);
-      toast.present?.();
-    } catch (e) {
-      console.warn('Toast present failed', e);
-    }
+  private async showToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      color: color,
+      duration: 2500,
+      position: 'bottom'
+    });
+    await toast.present();
   }
 
   goBack() {

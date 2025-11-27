@@ -143,7 +143,9 @@ export class IngresoPage implements OnInit {
   // 📌 ABRIR MODAL DE INGRESO MANUAL
   // ----------------------------------
   openManualEntryModal() {
+    console.log('Opening manual entry modal...');
     this.showManualEntryModal = true;
+    console.log('Modal state:', this.showManualEntryModal);
   }
 
   closeManualEntryModal() {

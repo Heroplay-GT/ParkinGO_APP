@@ -5,6 +5,7 @@ import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { Capacitor } from '@capacitor/core';
 import { BrowserMultiFormatReader } from '@zxing/browser';
 import type { Result } from '@zxing/library';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-scan-qr',
@@ -22,7 +23,8 @@ export class ScanQrPage implements OnDestroy {
 
   constructor(
     private firestore: Firestore,
-    private router: Router
+    private router: Router,
+    private toastController: ToastController
   ) { }
 
   ngOnDestroy() {
@@ -33,6 +35,10 @@ export class ScanQrPage implements OnDestroy {
   // START SCAN
   // ----------------------------------------
   async startScan() {
+    console.log('startScan called - INGRESO');
+    console.log('isNative:', this.isNative);
+    console.log('Platform:', Capacitor.getPlatform());
+    
     this.scanning = true;
 
     if (this.isNative) {
@@ -73,9 +79,18 @@ export class ScanQrPage implements OnDestroy {
   // ----------------------------------------
   async scanNative() {
     try {
+      console.log('scanNative started - INGRESO');
+      
+      // Verificar permisos
+      console.log('Checking permissions...');
       const granted = await BarcodeScanner.checkPermissions();
+      console.log('Permissions result:', granted);
+      
       if (granted.camera !== 'granted') {
+        console.log('Requesting permissions...');
         const requested = await BarcodeScanner.requestPermissions();
+        console.log('Request result:', requested);
+        
         if (requested.camera !== 'granted') {
           this.showToast('Camera permission denied', 'danger');
           this.scanning = false;
@@ -83,12 +98,16 @@ export class ScanQrPage implements OnDestroy {
         }
       }
 
+      console.log('Permissions granted, starting scan...');
+      
       // Ocultar el fondo de la web
       document.body.classList.add('barcode-scanner-active');
 
+      // Agregar listener para los códigos escaneados
       const listener = await BarcodeScanner.addListener(
         'barcodesScanned',
         async (result) => {
+          console.log('Barcode scanned:', result);
           if (!this.scanning) return;
           if (result.barcodes && result.barcodes.length > 0) {
             await this.processQR(result.barcodes[0].displayValue);
@@ -96,12 +115,16 @@ export class ScanQrPage implements OnDestroy {
         }
       );
 
+      // Iniciar el escaneo
+      console.log('Calling BarcodeScanner.startScan()...');
       await BarcodeScanner.startScan();
+      console.log('Scanner started successfully');
 
     } catch (err) {
-      console.error(err);
-      this.showToast('Native scanner error', 'danger');
+      console.error('Error en scanNative:', err);
+      this.showToast('Native scanner error: ' + (err as any).message, 'danger');
       this.scanning = false;
+      document.body.classList.remove('barcode-scanner-active');
     }
   }
 
@@ -201,14 +224,14 @@ export class ScanQrPage implements OnDestroy {
   }
 
   // ----------------------------------------
-  showToast(message: string, color: string) {
-    const t: any = document.createElement('ion-toast');
-    t.message = message;
-    t.color = color;
-    t.duration = 2000;
-    document.body.appendChild(t);
-    // present() returns a promise; fire-and-forget is fine here
-    try { t.present(); } catch (e) { /* noop */ }
+  async showToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      color: color,
+      duration: 2500,
+      position: 'bottom'
+    });
+    await toast.present();
   }
 
   goBack() {
