@@ -6,12 +6,13 @@
   min-height: 100vh;
   color: #eaeaea;
   font-family: 'Poppins', sans-serif;
+  padding-bottom: 80px;
 }
 
 .bg-gradient {
   width: 100%;
   max-width: 420px;
-  padding: 40px 25px;
+  padding: 30px 25px;
   border-radius: 16px;
   background: radial-gradient(circle at 30% 20%, #0f2027, #091416);
   box-shadow: 0 0 25px rgba(0, 255, 198, 0.08);
@@ -20,19 +21,166 @@
 }
 
 .brand {
-  margin-bottom: 35px;
+  margin-bottom: 20px;
+  
+  h1 {
+    font-size: 1.5rem;
+    margin: 10px 0 5px;
+  }
+  
+  p {
+    font-size: 0.85rem;
+    color: #a0a0a0;
+  }
 }
 
 .logo {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 15px;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 10px;
   border-radius: 50%;
   background: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
   box-shadow: 0 0 15px rgba(0, 255, 198, 0.3);
+}
+
+// Vehicle Type Selector
+.vehicle-selector {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 0 10px;
+  
+  .vehicle-btn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(0, 255, 198, 0.2);
+    border-radius: 12px;
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #8b8b8b;
+    
+    ion-icon {
+      font-size: 28px;
+    }
+    
+    span {
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    
+    &.active {
+      background: rgba(0, 255, 198, 0.15);
+      border-color: #00ffc6;
+      color: #00ffc6;
+      box-shadow: 0 0 15px rgba(0, 255, 198, 0.3);
+      
+      ion-icon {
+        color: #00ffc6;
+      }
+    }
+    
+    &:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(0, 255, 198, 0.4);
+    }
+  }
+}
+
+// Parking Slots Header
+.parking-slots-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 5px;
+  
+  .view-tabs {
+    display: flex;
+    gap: 0;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 3px;
+    
+    button {
+      background: transparent;
+      border: none;
+      color: #8b8b8b;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      
+      &.active {
+        background: #00ffc6;
+        color: #0b1416;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+// Parking Grid Visual
+.parking-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+.parking-slot {
+  aspect-ratio: 1.5;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(0, 255, 198, 0.3);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  
+  &.occupied {
+    background: rgba(0, 255, 198, 0.15);
+    border-color: rgba(0, 255, 198, 0.5);
+    cursor: not-allowed;
+    
+    .car-icon {
+      font-size: 40px;
+      color: #00ffc6;
+    }
+  }
+  
+  &.selected {
+    background: rgba(0, 255, 198, 0.25);
+    border-color: #00ffc6;
+    border-width: 3px;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 255, 198, 0.4);
+  }
+  
+  .slot-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #00ffc6;
+    text-shadow: 0 0 10px rgba(0, 255, 198, 0.5);
+  }
+  
+  &:not(.occupied):hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 255, 198, 0.2);
+    border-color: #00ffc6;
+  }
 }
 
 ion-item.custom-item {
@@ -58,7 +206,8 @@ ion-input::part(native) {
   color: #eaeaea;
 }
 
-.login-button {
+.login-button,
+.reserve-button {
   margin-top: 10px;
   --background: linear-gradient(90deg, #00ffc6, #00bfa5);
   color: #0b1416;
@@ -68,7 +217,8 @@ ion-input::part(native) {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.login-button:hover {
+.login-button:hover,
+.reserve-button:hover {
   transform: scale(1.05);
   box-shadow: 0 0 20px rgba(0, 255, 198, 0.35);
 }

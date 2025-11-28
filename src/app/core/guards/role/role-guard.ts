@@ -18,7 +18,8 @@ export class RoleGuard implements CanActivate {
     const user = await this.auth.currentUser;
     if (!user) {
       // No hay sesión → redirigir al login de admin
-      return this.router.createUrlTree(['/login-admin']);
+      await this.router.createUrlTree(['/login-admin']);
+      return false;
     }
 
     const role = await this.AuthRoleService.getUserRole();
@@ -26,10 +27,9 @@ export class RoleGuard implements CanActivate {
     if (role === 'admin') {
       return true; // ✅ puede acceder al panel admin
     } else {
-      // 🚫 no es admin → enviarlo a home
+      // 🚫 no es admin → enviarlo a home de usuarios
       await this.router.createUrlTree(['/home']);
       return false;
-
     }
   }
 }

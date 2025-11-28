@@ -99,42 +99,54 @@ export class AdminPage implements OnInit {
     const total = this.calculateTotal(vehicle);
     const hours = this.calculateHours(vehicle.entryTime);
 
-    // Guardar registro en colección "salidas"
-    await addDoc(collection(this.firestore, 'salidas'), {
-      reservationId: vehicle.id,
-      plate: vehicle.plate,
-      model: vehicle.model,
-      space: vehicle.space,
-      vehicleType: vehicle.vehicleType,
-      entryTime: vehicle.entryTime,
-      exitTime: new Date(),
-      hours,
-      total,
-      userId: vehicle.userId || null
-    });
+    try {
+      // Guardar registro en colección "salidas"
+      await addDoc(collection(this.firestore, 'salidas'), {
+        reservationId: vehicle.id,
+        plate: vehicle.plate,
+        model: vehicle.model,
+        space: vehicle.space,
+        vehicleType: vehicle.vehicleType,
+        entryTime: vehicle.entryTime,
+        exitTime: new Date(),
+        hours,
+        total,
+        userId: vehicle.userId || null
+      });
 
-    // Actualizar reserva → finalizado
-    await updateDoc(doc(this.firestore, 'reservations', vehicle.id), {
-      status: 'finalizado',
-      exitTime: new Date(),
-      total,
-      hours
-    });
+      // Actualizar reserva → finalizado
+      await updateDoc(doc(this.firestore, 'reservations', vehicle.id), {
+        status: 'finalizado',
+        exitTime: new Date(),
+        total,
+        hours
+      });
 
-    // Liberar espacio
-    await updateDoc(doc(this.firestore, 'spaces', vehicle.space), {
-      status: 'Available'
-    });
+      // Liberar espacio - usar spaceId si existe, sino buscar por código
+      if (vehicle.spaceId) {
+        await updateDoc(doc(this.firestore, 'spaces', vehicle.spaceId), {
+          status: 'Available'
+        });
+      }
 
-    // Notificación
-    const toast = document.createElement('ion-toast');
-    toast.message = `✔ Vehicle removed — Total: $${total}`;
-    toast.color = 'success';
-    toast.duration = 2500;
-    document.body.appendChild(toast);
-    toast.present();
+      // Notificación
+      const toast = document.createElement('ion-toast');
+      toast.message = `✔ Vehicle removed — Total: $${total}`;
+      toast.color = 'success';
+      toast.duration = 2500;
+      document.body.appendChild(toast);
+      toast.present();
 
-    this.closeDetails();
+      this.closeDetails();
+    } catch (error) {
+      console.error('Error removing vehicle:', error);
+      const toast = document.createElement('ion-toast');
+      toast.message = '❌ Error removing vehicle';
+      toast.color = 'danger';
+      toast.duration = 3000;
+      document.body.appendChild(toast);
+      toast.present();
+    }
   }
 
   // -------------------------------------------------------------------

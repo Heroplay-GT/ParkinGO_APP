@@ -1,5 +1,7 @@
 .reports-container {
   margin-top: 1rem;
+  --background: #0b1416;
+  color: #eaeaea;
 }
 
 // ----------------------------------------
@@ -10,25 +12,28 @@
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
   margin-bottom: 2rem;
+  padding: 0 15px;
 }
 
 .kpi-card {
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0 12px rgba(0, 255, 198, 0.15);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
-  background: linear-gradient(135deg, #f5f7fa 0%, #fff 100%);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 198, 0.2);
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 0 20px rgba(0, 255, 198, 0.3);
+    border-color: rgba(0, 255, 198, 0.4);
   }
 
   ion-card-header {
     padding: 1rem;
     display: flex;
     justify-content: center;
-    background: linear-gradient(135deg, #3880ff 0%, #00d4ff 100%);
+    background: linear-gradient(135deg, rgba(0, 255, 198, 0.25), rgba(0, 255, 198, 0.15));
   }
 
   ion-card-content {
@@ -37,7 +42,7 @@
 
     .kpi-label {
       font-size: 0.85rem;
-      color: #666;
+      color: #b3b3b3;
       margin: 0 0 0.5rem 0;
       font-weight: 500;
       text-transform: uppercase;
@@ -47,14 +52,16 @@
     .kpi-value {
       font-size: 1.8rem;
       font-weight: 700;
-      color: #1a1a1a;
+      color: #00ffc6;
       margin: 0;
+      text-shadow: 0 0 8px rgba(0, 255, 198, 0.3);
     }
   }
 
   .kpi-icon {
     font-size: 2rem;
-    color: #fff;
+    color: #00ffc6;
+    filter: drop-shadow(0 0 6px rgba(0, 255, 198, 0.4));
   }
 }
 
@@ -66,22 +73,26 @@
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
+  padding: 0 15px;
 }
 
 .chart-card {
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0 12px rgba(0, 255, 198, 0.15);
   overflow: hidden;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 198, 0.2);
 
   ion-card-header {
-    background: linear-gradient(135deg, #3880ff 0%, #00d4ff 100%);
+    background: linear-gradient(135deg, rgba(0, 255, 198, 0.25), rgba(0, 255, 198, 0.15));
     padding: 1rem;
+    border-bottom: 1px solid rgba(0, 255, 198, 0.2);
 
     ion-card-title {
-      color: #fff;
+      color: #00ffc6;
       font-weight: 700;
       font-size: 1.1rem;
+      text-shadow: 0 0 8px rgba(0, 255, 198, 0.3);
     }
   }
 
@@ -92,6 +103,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: rgba(11, 20, 22, 0.5);
 
     canvas {
       max-height: 100%;
@@ -125,8 +137,12 @@
   gap: 1rem;
 
   p {
-    color: #666;
+    color: #b3b3b3;
     font-weight: 500;
+  }
+  
+  ion-spinner {
+    --color: #00ffc6;
   }
 }
 

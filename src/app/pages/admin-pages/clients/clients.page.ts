@@ -98,7 +98,12 @@ export class ClientsPage implements OnInit {
         this.router.navigate(['/ingreso']);
         break;
       case 'retirar':
-        this.router.navigate(['/admin']);
+        console.log('Navigating to /admin');
+        this.router.navigate(['/admin']).then(success => {
+          console.log('Navigation result:', success);
+        }).catch(err => {
+          console.error('Navigation error:', err);
+        });
         break;
       case 'config-admin':
         this.router.navigate(['/config-admin']);

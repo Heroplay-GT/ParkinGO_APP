@@ -143,3 +143,21 @@ ion-button {
   --background: #0b1416;
   color: #fff;
 }
+
+/* ============================= */
+/* 🎨 MODAL HEADER - DARK THEME  */
+/* ============================= */
+ion-modal ion-toolbar {
+  --background: rgba(11, 20, 22, 0.95);
+  --color: #00ffc6;
+  border-bottom: 1px solid rgba(0, 255, 198, 0.3);
+}
+
+ion-modal ion-toolbar ion-title {
+  color: #00ffc6;
+  font-weight: 600;
+}
+
+ion-modal ion-toolbar ion-button {
+  --color: #00ffc6;
+}

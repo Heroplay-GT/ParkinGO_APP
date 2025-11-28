@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Firestore, collection, addDoc, getDocs, deleteDoc, doc } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -31,7 +31,8 @@ export class ConfigAdminPage implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private afAuth: AuthFirebase,
-    private readonly auth: Auth
+    private readonly auth: Auth,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -51,19 +52,23 @@ export class ConfigAdminPage implements OnInit {
 
   openCreateConfig() {
     this.showConfigModal = true;
+    this.cdr.detectChanges();
   }
 
   closeConfig() {
     this.showConfigModal = false;
+    this.cdr.detectChanges();
   }
 
   openDeleteModal() {
     this.showDeleteModal = true;
+    this.cdr.detectChanges();
   }
 
   closeDeleteModal() {
     this.showDeleteModal = false;
     this.adminPassword = '';
+    this.cdr.detectChanges();
   }
 
   async loadSummary() {
@@ -174,8 +179,32 @@ export class ConfigAdminPage implements OnInit {
   }
 
   async doLogOut() {
-    await this.auth.logout();
-    this.router.navigate(['/login-admin']);
+    const shouldLogout = await this.confirmLogout();
+    if (shouldLogout) {
+      await this.auth.logout();
+      this.router.navigate(['/login-admin']);
+    }
+  }
+
+  async confirmLogout(): Promise<boolean> {
+    return new Promise((resolve) => {
+      const alert = document.createElement('ion-alert');
+      alert.header = 'Confirm Logout';
+      alert.message = 'Are you sure you want to log out?';
+      alert.buttons = [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => resolve(false)
+        },
+        {
+          text: 'Logout',
+          handler: () => resolve(true)
+        }
+      ];
+      document.body.appendChild(alert);
+      alert.present();
+    });
   }
 
   async go(route: string) {
@@ -189,9 +218,13 @@ export class ConfigAdminPage implements OnInit {
         this.router.navigate(['/ingreso']);
         break;
       case 'retirar':
-        this.router.navigate(['/admin']);
+        console.log('Navigating to /admin');
+        this.router.navigate(['/admin']).then(success => {
+          console.log('Navigation result:', success);
+        }).catch(err => {
+          console.error('Navigation error:', err);
+        });
         break;
-
       case 'logout':
         await this.doLogOut();
         break;

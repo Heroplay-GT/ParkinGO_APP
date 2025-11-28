@@ -51,4 +51,49 @@ body.barcode-scanner-active {
   visibility: visible;
 }
 
+/* Quitar colores azules de los toolbars */
+ion-toolbar {
+  --background: #0b1416 !important;
+  --color: #00ffc6 !important;
+}
+
+ion-header ion-toolbar {
+  --background: #0b1416 !important;
+  --color: #00ffc6 !important;
+}
+
+/* ======================================= */
+/* Custom Alert - White Text              */
+/* ======================================= */
+.custom-alert {
+  --background: #0b1416;
+
+  .alert-wrapper {
+    background: #0b1416;
+    border: 1px solid rgba(0, 255, 198, 0.3);
+    border-radius: 16px;
+  }
+
+  .alert-head {
+    h2 {
+      color: #ffffff !important;
+      font-weight: 600;
+    }
+  }
+
+  .alert-message {
+    color: #ffffff !important;
+    opacity: 0.9;
+  }
+
+  .alert-button {
+    color: #00ffc6 !important;
+    font-weight: 600;
+  }
+
+  .alert-button.secondary {
+    color: #ffffff !important;
+    opacity: 0.7;
+  }
+}
 

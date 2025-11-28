@@ -15,8 +15,12 @@ export class ReservationsPage implements OnInit {
   reservaForm!: FormGroup;
   vehicleTypes = ['Car', 'Motorcycle', 'Bicycle'];
   availableSpaces: any[] = [];
+  allSpaces: any[] = [];
+  filteredSpaces: any[] = [];
   selectedSpace: any = null;
   pricePerHour = 0;
+  viewMode: 'visual' | 'list' = 'visual';
+  selectedVehicleType: string = 'Car';
 
   constructor(
     private fb: FormBuilder,
@@ -32,6 +36,60 @@ export class ReservationsPage implements OnInit {
       model: ['', Validators.required],
       space: ['', Validators.required],
     });
+    
+    this.loadAllSpaces();
+  }
+
+  async loadAllSpaces() {
+    const snapshot = await getDocs(collection(this.firestore, 'spaces'));
+    this.allSpaces = snapshot.docs.map(doc => ({
+      id: doc.id,
+      code: doc.data()['code'],
+      vehicleType: doc.data()['vehicleType'],
+      pricePerHour: doc.data()['pricePerHour'],
+      status: doc.data()['status']
+    }));
+    
+    this.filterByVehicleType('Car');
+  }
+
+  filterByVehicleType(type: string) {
+    this.selectedVehicleType = type;
+    this.filteredSpaces = this.allSpaces.filter(space => space.vehicleType === type);
+    this.selectedSpace = null;
+  }
+
+  getVehicleIcon(vehicleType: string): string {
+    switch(vehicleType) {
+      case 'Car':
+        return 'car';
+      case 'Motorcycle':
+        return 'bicycle';
+      case 'Bicycle':
+        return 'bicycle-outline';
+      default:
+        return 'car';
+    }
+  }
+
+  selectSpace(space: any) {
+    if (space.status === 'Occupied') {
+      return;
+    }
+    
+    this.selectedSpace = space;
+    this.pricePerHour = space.pricePerHour;
+  }
+
+  openReservationForm() {
+    if (!this.selectedSpace) return;
+    
+    this.viewMode = 'list';
+    this.reservaForm.patchValue({
+      vehicleType: this.selectedSpace.vehicleType,
+      space: this.selectedSpace.id
+    });
+    this.pricePerHour = this.selectedSpace.pricePerHour;
   }
 
   // Cargar espacios disponibles según el tipo

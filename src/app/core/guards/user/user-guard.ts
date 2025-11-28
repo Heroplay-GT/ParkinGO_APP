@@ -18,7 +18,8 @@ export class UserGuard implements CanActivate {
     const user = await this.auth.currentUser;
     if (!user) {
       // No hay sesión → redirigir al login de usuarios
-      return this.router.createUrlTree(['/login']);
+      await this.router.createUrlTree(['/login']);
+      return false;
     }
 
     const role = await this.AuthRoleService.getUserRole();
@@ -29,7 +30,6 @@ export class UserGuard implements CanActivate {
       // 🚫 es admin → enviarlo al panel admin
       await this.router.createUrlTree(['/admin']);
       return false;
-
     }
   }
 }

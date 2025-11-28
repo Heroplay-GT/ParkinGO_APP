@@ -2,13 +2,71 @@
   <div class="bg-gradient">
     <div class="brand">
       <div class="logo">
-        <ion-icon name="car-outline" style="color:#00ffc6; font-size:42px;"></ion-icon>
+        <svg width="50" height="50" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="60" r="60" fill="url(#logoGradientReservations)"/>
+          <path d="M60 25C47.85 25 38 34.85 38 47C38 64.5 60 95 60 95S82 64.5 82 47C82 34.85 72.15 25 60 25ZM60 57C54.48 57 50 52.52 50 47C50 41.48 54.48 37 60 37C65.52 37 70 41.48 70 47C70 52.52 65.52 57 60 57Z" fill="#0b1416"/>
+          <circle cx="60" cy="47" r="8" fill="#0b1416"/>
+          <defs>
+            <linearGradient id="logoGradientReservations" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#00ffc6;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#00bfa5;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+        </svg>
       </div>
       <h1>ParkinGO</h1>
       <p>Book your parking space easily</p>
     </div>
 
-    <form [formGroup]="reservaForm" (ngSubmit)="saveReservation()" class="login-form">
+    <!-- Vehicle Type Selector -->
+    <div class="vehicle-selector">
+      <button 
+        class="vehicle-btn" 
+        [class.active]="selectedVehicleType === 'Car'"
+        (click)="filterByVehicleType('Car')">
+        <ion-icon name="car"></ion-icon>
+        <span>Car</span>
+      </button>
+      <button 
+        class="vehicle-btn" 
+        [class.active]="selectedVehicleType === 'Motorcycle'"
+        (click)="filterByVehicleType('Motorcycle')">
+        <ion-icon name="bicycle"></ion-icon>
+        <span>Motorcycle</span>
+      </button>
+      <button 
+        class="vehicle-btn" 
+        [class.active]="selectedVehicleType === 'Bicycle'"
+        (click)="filterByVehicleType('Bicycle')">
+        <ion-icon name="bicycle-outline"></ion-icon>
+        <span>Bicycle</span>
+      </button>
+    </div>
+
+    <!-- Parking Slots Visualization -->
+    <div class="parking-slots-header">
+      <div class="view-tabs">
+        <button [class.active]="viewMode === 'list'" (click)="viewMode = 'list'">Live view</button>
+        <button [class.active]="viewMode === 'visual'" (click)="viewMode = 'visual'">Floor view</button>
+      </div>
+    </div>
+
+    <!-- Visual View -->
+    <div class="parking-grid" *ngIf="viewMode === 'visual'">
+      <div *ngFor="let space of filteredSpaces; let i = index" 
+           class="parking-slot" 
+           [class.occupied]="space.status === 'Occupied'"
+           [class.selected]="selectedSpace?.id === space.id"
+           (click)="selectSpace(space)">
+        <ion-icon *ngIf="space.status === 'Occupied'" 
+                  [name]="getVehicleIcon(space.vehicleType)" 
+                  class="car-icon"></ion-icon>
+        <span *ngIf="space.status === 'Available'" class="slot-number">{{ space.code }}</span>
+      </div>
+    </div>
+
+    <!-- Form View -->
+    <form [formGroup]="reservaForm" (ngSubmit)="saveReservation()" class="login-form" *ngIf="viewMode === 'list'">
 
       <!-- Vehicle Type -->
       <ion-item lines="none" class="custom-item">
@@ -50,6 +108,14 @@
         Register
       </ion-button>
     </form>
+
+    <!-- Reserve Button for Visual Mode -->
+    <ion-button *ngIf="viewMode === 'visual' && selectedSpace" 
+                expand="block" 
+                class="reserve-button" 
+                (click)="openReservationForm()">
+      Park on slot {{ selectedSpace.code }}
+    </ion-button>
   </div>
 
   <app-submenu (navigate)="go($event)"></app-submenu>

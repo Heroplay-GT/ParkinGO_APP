@@ -60,17 +60,6 @@ export class LoginPage implements OnInit {
     this.loginForm.reset();
   }
 
-  async onGoogleLogin() {
-    try {
-      await this.authSrv.loginWithGoogle();
-      this.showToast('Login with Google successful!', 'success');
-      this.router.navigate(['/index']);
-    } catch (error: any) {
-      console.error('Google login error:', error);
-      this.showToast(error.message || 'Google login failed', 'danger');
-    }
-  }
-
   showToast(message: string, color: string) {
     const toast: any = document.createElement('ion-toast');
     toast.message = message;

@@ -23,6 +23,16 @@
 
 	/* Input background (dark card) */
 	--input-bg: rgba(255,255,255,0.03);
+
+	/* ================================ */
+	/* Ionic Color Variables Override   */
+	/* ================================ */
+	--ion-color-primary: rgba(11, 20, 22, 0.95);
+	--ion-color-primary-rgb: 11, 20, 22;
+	--ion-color-primary-contrast: #00ffc6;
+	--ion-color-primary-contrast-rgb: 0, 255, 198;
+	--ion-color-primary-shade: #0a1214;
+	--ion-color-primary-tint: #1a2e33;
 }
 
 // For information on how to create your own theme, please see:

@@ -103,8 +103,32 @@ export class ConfigPage implements OnInit {
   }
 
   async doLogOut() {
-    await this.auth.logout();
-    this.router.navigate(['/home']);
+    const shouldLogout = await this.confirmLogout();
+    if (shouldLogout) {
+      await this.auth.logout();
+      this.router.navigate(['/login']);
+    }
+  }
+
+  async confirmLogout(): Promise<boolean> {
+    return new Promise((resolve) => {
+      const alert = document.createElement('ion-alert');
+      alert.header = 'Confirm Logout';
+      alert.message = 'Are you sure you want to log out?';
+      alert.buttons = [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => resolve(false)
+        },
+        {
+          text: 'Logout',
+          handler: () => resolve(true)
+        }
+      ];
+      document.body.appendChild(alert);
+      alert.present();
+    });
   }
 
 

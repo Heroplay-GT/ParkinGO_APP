@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Firestore, collection, query, where, onSnapshot, updateDoc, addDoc, doc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Auth } from 'src/app/core/providers/auth/auth';
@@ -21,17 +21,18 @@ export class IngresoPage implements OnInit {
   showReservationModal = false;
   showManualEntryModal = false;
 
-  manual = {
-    type: '',
+  manualEntry = {
+    vehicleType: '',
     plate: '',
     model: '',
-    space: ''
+    spaceCode: ''
   };
 
   constructor(
     private firestore: Firestore,
     private auth: Auth,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) { }
 
   async ngOnInit() {
@@ -63,10 +64,20 @@ export class IngresoPage implements OnInit {
     const qSpaces = query(ref, where('status', '==', 'Available'));
 
     onSnapshot(qSpaces, (snap) => {
-      this.availableSpaces = snap.docs.map(d => ({
-        id: d.id,
-        ...d.data()
-      }));
+      this.availableSpaces = snap.docs
+        .map(d => {
+          const data = d.data();
+          return {
+            id: d.id,
+            code: data['code'],
+            vehicleType: data['vehicleType'],
+            pricePerHour: data['pricePerHour'],
+            status: data['status']
+          };
+        })
+        .filter(space => space.code && space.pricePerHour); // Filtrar espacios válidos
+      
+      console.log('Available spaces loaded:', this.availableSpaces.length);
     });
   }
 
@@ -87,11 +98,13 @@ export class IngresoPage implements OnInit {
   openReservationActions(res: any) {
     this.selectedReservation = res;
     this.showReservationModal = true;
+    this.cdr.detectChanges();
   }
 
   closeReservationModal() {
     this.showReservationModal = false;
     this.selectedReservation = null;
+    this.cdr.detectChanges();
   }
 
   // ----------------------------------
@@ -144,47 +157,115 @@ export class IngresoPage implements OnInit {
   // ----------------------------------
   openManualEntryModal() {
     console.log('Opening manual entry modal...');
+    console.log('Available spaces:', this.availableSpaces);
+    
+    // Resetear el objeto
+    this.manualEntry = {
+      vehicleType: '',
+      plate: '',
+      model: '',
+      spaceCode: ''
+    };
+    
     this.showManualEntryModal = true;
-    console.log('Modal state:', this.showManualEntryModal);
+    this.cdr.detectChanges();
+    
+    // Forzar otra detección después de un momento
+    setTimeout(() => {
+      this.cdr.detectChanges();
+      console.log('Modal state:', this.showManualEntryModal);
+      console.log('Manual entry data:', this.manualEntry);
+    }, 100);
   }
 
   closeManualEntryModal() {
     this.showManualEntryModal = false;
-    this.manual = { type: '', plate: '', model: '', space: '' };
+    this.manualEntry = {
+      vehicleType: '',
+      plate: '',
+      model: '',
+      spaceCode: ''
+    };
+    this.cdr.detectChanges();
   }
 
   // ----------------------------------
   // 📝 REGISTRAR INGRESO MANUAL
   // ----------------------------------
   async createManualEntry() {
+    console.log('Creating manual entry with data:', this.manualEntry);
+    
+    if (!this.manualEntry.vehicleType || !this.manualEntry.plate || !this.manualEntry.model || !this.manualEntry.spaceCode) {
+      const toast = document.createElement('ion-toast');
+      toast.message = '⚠️ Please fill all fields';
+      toast.color = 'warning';
+      toast.duration = 2000;
+      document.body.appendChild(toast);
+      toast.present();
+      console.log('Validation failed:', {
+        vehicleType: this.manualEntry.vehicleType,
+        plate: this.manualEntry.plate,
+        model: this.manualEntry.model,
+        spaceCode: this.manualEntry.spaceCode
+      });
+      return;
+    }
+
+    const selectedSpace = this.availableSpaces.find(s => s.code === this.manualEntry.spaceCode);
+    console.log('Selected space:', selectedSpace);
+
+    if (!selectedSpace) {
+      const toast = document.createElement('ion-toast');
+      toast.message = '⚠️ Space not found';
+      toast.color = 'warning';
+      toast.duration = 2000;
+      document.body.appendChild(toast);
+      toast.present();
+      return;
+    }
 
     const data = {
-      vehicleType: this.manual.type,
-      plate: this.manual.plate,
-      model: this.manual.model,
-      space: this.manual.space,
+      vehicleType: this.manualEntry.vehicleType,
+      plate: this.manualEntry.plate || 'N/A',
+      model: this.manualEntry.model,
+      space: this.manualEntry.spaceCode,
+      spaceId: selectedSpace.id,
       userId: null,
+      email: 'admin-manual-entry',
       startDate: new Date(),
       entryTime: new Date(),
-      pricePerHour:
-        this.availableSpaces.find(s => s.code === this.manual.space)?.pricePerHour,
+      pricePerHour: selectedSpace.pricePerHour,
       status: 'active'
     };
 
-    await addDoc(collection(this.firestore, 'reservations'), data);
+    console.log('Data to save:', data);
 
-    await updateDoc(doc(this.firestore, 'spaces', this.manual.space), {
-      status: 'Occupied'
-    });
+    try {
+      const docRef = await addDoc(collection(this.firestore, 'reservations'), data);
+      console.log('Reservation created with ID:', docRef.id);
 
-    const toast = document.createElement('ion-toast');
-    toast.message = '🚘 Manual entry registered!';
-    toast.color = 'success';
-    toast.duration = 2000;
-    document.body.appendChild(toast);
-    toast.present();
+      await updateDoc(doc(this.firestore, 'spaces', selectedSpace.id), {
+        status: 'Occupied'
+      });
+      console.log('Space updated to Occupied');
 
-    this.closeManualEntryModal();
+      const toast = document.createElement('ion-toast');
+      toast.message = '🚘 Manual entry registered!';
+      toast.color = 'success';
+      toast.duration = 2000;
+      document.body.appendChild(toast);
+      toast.present();
+
+      this.closeManualEntryModal();
+    } catch (error) {
+      console.error('Error creating manual entry:', error);
+      const toast = document.createElement('ion-toast');
+      toast.message = '❌ Error creating entry: ' + (error as any).message;
+      toast.color = 'danger';
+      toast.duration = 3000;
+      document.body.appendChild(toast);
+      toast.present();
+    }
   }
 
   getVehicleIcon(type: string) {
@@ -197,6 +278,11 @@ export class IngresoPage implements OnInit {
   async doLogOut() {
     await this.auth.logout();
     this.router.navigate(['/login-admin']);
+  }
+
+  selectSpace(spaceCode: string) {
+    this.manualEntry.spaceCode = spaceCode;
+    this.cdr.detectChanges();
   }
 
   async go(route: string) {
