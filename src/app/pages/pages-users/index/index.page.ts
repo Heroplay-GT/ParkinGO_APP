@@ -1,15 +1,17 @@
 import { Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Auth } from 'src/app/core/providers/auth/auth';
 import {
   Firestore,
   collection,
-  getDocs,
   query,
   where,
   DocumentData,
   doc,
-  updateDoc
+  updateDoc,
+  onSnapshot,
+  Unsubscribe,
+  getDocs
 } from '@angular/fire/firestore';
 
 @Component({
@@ -18,7 +20,7 @@ import {
   styleUrls: ['./index.page.scss'],
   standalone: false
 })
-export class IndexPage implements OnInit {
+export class IndexPage implements OnInit, OnDestroy {
   reservations: any[] = [];
   loading = true;
   userEmail: string | null = null;
@@ -27,47 +29,83 @@ export class IndexPage implements OnInit {
   showQRModal = false;
   selectedQR: string | null = null;
 
+  // 🔹 Unsubscriber para tiempo real
+  private unsubscribeReservations: Unsubscribe | null = null;
+
   constructor(
     private auth: Auth,
     private firestore: Firestore,
     private router: Router
   ) { }
 
-  async ngOnInit() {
-    await this.loadReservations();
-    await this.markExpiredReservations();
+  ngOnInit() {
+    this.subscribeToReservations();
+    this.markExpiredReservations();
   }
 
-  async ionViewWillEnter() {
-    await this.loadReservations(); // 🔹 recarga cada vez que entras
-    await this.markExpiredReservations();
+  ngOnDestroy() {
+    // 🔹 Desuscribirse cuando se destruye el componente
+    this.unsubscribeReservations?.();
   }
 
+  ionViewWillEnter() {
+    // Si ya está suscrito, no vuelvas a suscribir
+    if (!this.unsubscribeReservations) {
+      this.subscribeToReservations();
+    }
+    this.markExpiredReservations();
+  }
 
-  // 🔹 Cargar reservas del usuario ordenadas (más recientes primero)
-  async loadReservations() {
+  ionViewWillLeave() {
+    // Opcional: desuscribirse al salir de la página
+    // this.unsubscribeReservations?.();
+  }
+
+  // ========================================
+  // SUBSCRIBE TO RESERVATIONS (TIEMPO REAL)
+  // ========================================
+  subscribeToReservations() {
     this.loading = true;
     try {
-      const user = await this.auth['afb'].currentUser;
-      if (!user) return;
+      const user = this.auth['afb'].currentUser;
+      if (!user) {
+        this.loading = false;
+        return;
+      }
 
       const q = query(
         collection(this.firestore, 'reservations'),
         where('userId', '==', user.uid)
       );
-      const snapshot = await getDocs(q);
 
-      this.reservations = snapshot.docs
-        .map(doc => {
-          const data = doc.data() as DocumentData;
-          const startDate = data['startDate']?.toDate ? data['startDate'].toDate() : new Date(data['startDate']);
-          return { id: doc.id, ...data, startDate };
-        })
-        .sort((a, b) => b.startDate - a.startDate); // 🔹 Orden descendente
+      // 🔹 onSnapshot = escucha cambios en tiempo real
+      this.unsubscribeReservations = onSnapshot(
+        q,
+        (snapshot) => {
+          this.reservations = snapshot.docs
+            .map(doc => {
+              const data = doc.data() as DocumentData;
+              const startDate = data['startDate']?.toDate
+                ? data['startDate'].toDate()
+                : new Date(data['startDate']);
+              // normalizar vehicleType y otros campos opcionales
+              const vehicleType = data['vehicleType'] || data['vehicle'] || '';
+              return { id: doc.id, ...data, startDate, vehicleType };
+            })
+            .sort((a, b) => b.startDate - a.startDate); // 🔹 Orden descendente
+
+          console.log('✓ Reservations updated in real-time:', this.reservations.length);
+          this.loading = false;
+        },
+        (error) => {
+          console.error('🔥 Error subscribing to reservations:', error);
+          this.loading = false;
+        }
+      );
     } catch (error) {
-      console.error('🔥 Error loading reservations:', error);
+      console.error('🔥 Error in subscribeToReservations:', error);
+      this.loading = false;
     }
-    this.loading = false;
   }
 
   // 🔹 Mostrar QR
@@ -117,7 +155,6 @@ export class IndexPage implements OnInit {
         await updateDoc(s.ref, { status: 'Available' });
       }
 
-
       // 🔹 Actualizar lista local
       res.status = 'cancelled';
 
@@ -132,8 +169,11 @@ export class IndexPage implements OnInit {
     }
   }
 
-  getVehicleIcon(vehicleType: string): string {
-    switch (vehicleType?.toLowerCase()) {
+  // getVehicleIcon reemplazado por versión segura
+  getVehicleIcon(vehicleType?: string): string {
+    const v = (vehicleType || '').toLowerCase();
+
+    switch (v) {
       case 'car':
       case 'carro':
         return 'car-outline';
@@ -156,7 +196,9 @@ export class IndexPage implements OnInit {
 
     for (const docSnap of snapshot.docs) {
       const data = docSnap.data() as any;
-      const endDate = data.endDate?.toDate ? data.endDate.toDate() : new Date(data.endDate);
+      const endDate = data.endDate?.toDate
+        ? data.endDate.toDate()
+        : new Date(data.endDate);
 
       if (endDate < now && data.status === 'pending') {
         await updateDoc(docSnap.ref, { status: 'expired' });
@@ -169,6 +211,7 @@ export class IndexPage implements OnInit {
 
   // 🔹 Logout
   async doLogOut() {
+    this.unsubscribeReservations?.();
     await this.auth.logout();
     this.router.navigate(['/home']);
   }
@@ -176,7 +219,6 @@ export class IndexPage implements OnInit {
   // 🔹 Navegación del submenú
   async go(route: string) {
     switch (route) {
-
       case 'reservations':
         this.router.navigate(['/reservations']);
         break;
@@ -191,4 +233,9 @@ export class IndexPage implements OnInit {
         console.log('Unknown nav:', route);
     }
   }
+
+  refreshList() {
+    this.subscribeToReservations();
+  }
+
 }

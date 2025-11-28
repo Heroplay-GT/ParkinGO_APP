@@ -37,7 +37,7 @@ export class ScanQrSalidaPage implements OnDestroy {
     console.log('startScan called');
     console.log('isNative:', this.isNative);
     console.log('Platform:', Capacitor.getPlatform());
-    
+
     this.scanning = true;
 
     if (this.isNative) {
@@ -79,17 +79,17 @@ export class ScanQrSalidaPage implements OnDestroy {
   async scanNative() {
     try {
       console.log('scanNative started');
-      
+
       // Verificar permisos
       console.log('Checking permissions...');
       const granted = await BarcodeScanner.checkPermissions();
       console.log('Permissions result:', granted);
-      
+
       if (granted.camera !== 'granted') {
         console.log('Requesting permissions...');
         const requested = await BarcodeScanner.requestPermissions();
         console.log('Request result:', requested);
-        
+
         if (requested.camera !== 'granted') {
           this.showToast('Se necesitan permisos de cámara', 'danger');
           this.scanning = false;
@@ -98,7 +98,7 @@ export class ScanQrSalidaPage implements OnDestroy {
       }
 
       console.log('Permissions granted, starting scan...');
-      
+
       // Ocultar el fondo de la web
       document.body.classList.add('barcode-scanner-active');
 
@@ -110,12 +110,12 @@ export class ScanQrSalidaPage implements OnDestroy {
           console.log('🔍 SALIDA - Barcode detected:', result);
           console.log('🔍 SALIDA - Barcodes array:', result.barcodes);
           console.log('🔍 SALIDA - Scanning state:', this.scanning);
-          
+
           if (!this.scanning) {
             console.log('⚠️ SALIDA - Not scanning, ignoring');
             return;
           }
-          
+
           if (result.barcodes && result.barcodes.length > 0) {
             const code = result.barcodes[0].displayValue;
             console.log('✅ SALIDA - Processing code:', code);
@@ -184,27 +184,29 @@ export class ScanQrSalidaPage implements OnDestroy {
   // ----------------------------------------
   async processQR(raw: string) {
     console.log('🚀 SALIDA - processQR called with:', raw);
-    this.stopScan();
-    console.log('🚀 SALIDA - Scanner stopped');
 
     try {
       if (!raw) {
-        console.log('❌ SALIDA - Empty QR');
         this.showToast('QR vacío', 'warning');
         return;
       }
 
-      console.log('🚀 SALIDA - Parsing JSON...');
-      const data = JSON.parse(raw);
-      console.log('🚀 SALIDA - Parsed data:', data);
-      const reservationId = data.id;
-
-      if (!reservationId) {
-        this.showToast('QR inválido (id faltante)', 'danger');
+      // 1️⃣ LEER JSON
+      let data;
+      try {
+        data = JSON.parse(raw);
+      } catch {
+        this.showToast('QR inválido', 'danger');
         return;
       }
 
-      // Obtener reserva
+      const reservationId = data.id;
+      if (!reservationId) {
+        this.showToast('QR inválido (sin id)', 'danger');
+        return;
+      }
+
+      // 2️⃣ OBTENER RESERVA
       const ref = doc(this.firestore, 'reservations', reservationId);
       const snap = await getDoc(ref);
 
@@ -215,63 +217,67 @@ export class ScanQrSalidaPage implements OnDestroy {
 
       const vehicle: any = snap.data();
 
-      // Validar que esté activa
+      // 3️⃣ VALIDAR ESTADO
       if (vehicle.status !== 'active') {
-        this.showToast('La reserva no está activa', 'danger');
+        this.showToast('Esta reserva no está activa', 'danger');
         return;
       }
 
-      // Convertir entryTime a Date
-      const entryTime = this.toDate(vehicle.entryTime);
-      const exitTime = new Date();
+      // 4️⃣ HORAS Y TOTAL (MISMA LÓGICA DEL ADMIN)
+      const entryDate = vehicle.entryTime.toDate ? vehicle.entryTime.toDate() : new Date(vehicle.entryTime);
+      const now = new Date();
 
-      // Calcular horas y total
-      const hours = this.calculateHours(entryTime);
-      const total = (vehicle.pricePerHour ?? 0) * hours;
+      const diffMs = now.getTime() - entryDate.getTime();
+      const diffHours = Math.ceil(diffMs / (1000 * 60 * 60));
+      const hours = diffHours <= 0 ? 1 : diffHours;
 
-      // 1️⃣ Guardar en colección "salidas"
+      const total = hours * vehicle.pricePerHour;
+
+      // 5️⃣ GUARDAR EN "SALIDAS"
       await addDoc(collection(this.firestore, 'salidas'), {
         reservationId,
-        plate: vehicle.plate ?? null,
-        model: vehicle.model ?? null,
-        space: vehicle.space ?? null,
-        vehicleType: vehicle.vehicleType ?? null,
-        entryTime,
-        exitTime,
+        plate: vehicle.plate,
+        model: vehicle.model,
+        space: vehicle.space,
+        vehicleType: vehicle.vehicleType,
+        entryTime: vehicle.entryTime,
+        exitTime: now,
         hours,
         total,
-        userId: vehicle.userId ?? null
+        userId: vehicle.userId || null
       });
 
-      // 2️⃣ Actualizar reserva como "finalizado"
+      // 6️⃣ ACTUALIZAR RESERVA
       await updateDoc(ref, {
         status: 'finalizado',
-        exitTime,
+        exitTime: now,
         hours,
         total
       });
 
-      // 3️⃣ Liberar espacio
-      if (vehicle.space) {
-        await updateDoc(doc(this.firestore, 'spaces', vehicle.space), {
+      // 7️⃣ LIBERAR ESPACIO (USANDO spaceId COMO EN ADMIN)
+      if (vehicle.spaceId) {
+        await updateDoc(doc(this.firestore, 'spaces', vehicle.spaceId), {
           status: 'Available'
         });
       }
 
-      // Notificación de éxito
+      // 8️⃣ TOAST ÉXITO
       this.showToast(
-        `✔ Vehículo ${vehicle.plate ?? 'N/A'} retirado — Total: $${total.toLocaleString()}`,
+        `✔ Vehículo ${vehicle.plate} retirado. Total: $${total.toLocaleString()}`,
         'success'
       );
 
-      // Navegar a retiro
-      this.router.navigate(['/retiro']);
+      // 9️⃣ DETENER ESCANEO Y VOLVER
+      this.stopScan();
+      this.router.navigate(['/admin']);
 
     } catch (err) {
       console.error(err);
-      this.showToast('QR inválido o dañado', 'danger');
+      this.showToast('Error procesando el QR', 'danger');
     }
   }
+
 
   // ----------------------------------------
   // CONVERTIR A DATE

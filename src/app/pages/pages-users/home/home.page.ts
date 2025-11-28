@@ -24,10 +24,17 @@ export class HomePage implements OnInit, OnDestroy {
   ngOnInit() {
     this.setupSecretCodeListener();
     this.setupTripleTapListener();
-    console.log('HomePage initialized - Secret code listener activated');
+    console.log('🔓 HomePage initialized - Secret code listener ACTIVE');
   }
 
   ngOnDestroy() {
+    console.log('🔒 HomePage destroyed - Removing listeners');
+    this.removeSecretCodeListener();
+    this.removeTripleTapListener();
+  }
+
+  ionViewWillLeave() {
+    console.log('🔒 Leaving HomePage - Removing listeners');
     this.removeSecretCodeListener();
     this.removeTripleTapListener();
   }
@@ -36,41 +43,34 @@ export class HomePage implements OnInit, OnDestroy {
   // KONAMI CODE
   // ========================================
 
-  // ----------------------------------------
-  // SETUP SECRET CODE LISTENER
-  // ----------------------------------------
   private setupSecretCodeListener() {
     this.keyDownListener = (event: KeyboardEvent) => {
-      const key = event.key.toLowerCase();
-      console.log('Key pressed:', key);
-
-      this.secretCode.push(key);
+      console.log('Key pressed:', event.key);
+      this.secretCode.push(event.key.toLowerCase());
       this.secretCode = this.secretCode.slice(-this.secretSequence.length);
 
       console.log('Current sequence:', this.secretCode.join(','));
       console.log('Target sequence:', this.secretSequence.join(','));
-      console.log('Progress:', this.secretCode.length, '/', this.secretSequence.length);
 
-      // Comparar directamente sin convertir a minúsculas la secuencia
       const currentString = this.secretCode.join(',');
       const targetString = this.secretSequence.map(k => k.toLowerCase()).join(',');
 
       if (currentString === targetString) {
         console.log('✅ KONAMI CODE MATCHED!');
         this.triggerSecretAccess('konami');
-        this.secretCode = []; // Reinicia después de completar
+        this.secretCode = [];
       }
     };
 
     window.addEventListener('keydown', this.keyDownListener);
+    console.log('✓ Konami code listener added');
   }
 
-  // ----------------------------------------
-  // REMOVE SECRET CODE LISTENER
-  // ----------------------------------------
   private removeSecretCodeListener() {
     if (this.keyDownListener) {
       window.removeEventListener('keydown', this.keyDownListener);
+      this.keyDownListener = null;
+      console.log('✓ Konami code listener removed');
     }
   }
 
@@ -78,26 +78,20 @@ export class HomePage implements OnInit, OnDestroy {
   // TRIPLE TAP
   // ========================================
 
-  // ----------------------------------------
-  // SETUP TRIPLE TAP LISTENER
-  // ----------------------------------------
   private setupTripleTapListener() {
     this.clickListener = (event: MouseEvent) => {
       const now = Date.now();
 
-      // Si pasó menos de 300ms desde el último click
       if (now - this.lastTapTime < 300) {
         this.tapSequence.push(1);
         console.log('Tap detected! Total taps:', this.tapSequence.length);
       } else {
-        // Si pasó más de 300ms, reinicia
         this.tapSequence = [1];
         console.log('Tap sequence reset');
       }
 
       this.lastTapTime = now;
 
-      // Si tenemos 3 taps, activa el acceso secreto
       if (this.tapSequence.length === 3) {
         console.log('✅ TRIPLE TAP MATCHED!');
         this.triggerSecretAccess('triple-tap');
@@ -106,14 +100,14 @@ export class HomePage implements OnInit, OnDestroy {
     };
 
     document.addEventListener('click', this.clickListener);
+    console.log('✓ Triple tap listener added');
   }
 
-  // ----------------------------------------
-  // REMOVE TRIPLE TAP LISTENER
-  // ----------------------------------------
   private removeTripleTapListener() {
     if (this.clickListener) {
       document.removeEventListener('click', this.clickListener);
+      this.clickListener = null;
+      console.log('✓ Triple tap listener removed');
     }
   }
 
@@ -121,26 +115,25 @@ export class HomePage implements OnInit, OnDestroy {
   // TRIGGER SECRET ACCESS
   // ========================================
 
-  // ----------------------------------------
-  // TRIGGER SECRET ACCESS
-  // ----------------------------------------
   private triggerSecretAccess(method: string) {
     console.log(`🔓 Secret access triggered via ${method}!`);
+
+    // 🔹 Remover listeners antes de navegar
+    this.removeSecretCodeListener();
+    this.removeTripleTapListener();
+
     this.showSecretAnimation();
 
     setTimeout(() => {
       console.log('Navigating to admin login...');
       this.router.navigate(['login-admin']).then(success => {
-        console.log('✅ Navigation success:', success);
+        console.log('Navigation success:', success);
       }).catch(err => {
-        console.error('❌ Navigation error:', err);
+        console.error('Navigation error:', err);
       });
     }, 1500);
   }
 
-  // ----------------------------------------
-  // SHOW SECRET ANIMATION
-  // ----------------------------------------
   private showSecretAnimation() {
     // Remover overlay anterior si existe
     const existingOverlay = document.querySelector('.secret-overlay');
@@ -159,14 +152,12 @@ export class HomePage implements OnInit, OnDestroy {
     `;
     document.body.appendChild(overlay);
 
-    // Forzar repaint
     overlay.offsetHeight;
 
     setTimeout(() => {
       overlay.classList.add('active');
     }, 10);
 
-    // Remover overlay después de la animación
     setTimeout(() => {
       overlay.remove();
     }, 3000);

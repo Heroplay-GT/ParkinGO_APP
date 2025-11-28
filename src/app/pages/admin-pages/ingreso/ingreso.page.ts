@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Firestore, collection, query, where, onSnapshot, updateDoc, addDoc, doc } from '@angular/fire/firestore';
+import { Firestore, collection, query, where, onSnapshot, updateDoc, addDoc, doc, getDocs } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Auth } from 'src/app/core/providers/auth/auth';
 
@@ -76,7 +76,7 @@ export class IngresoPage implements OnInit {
           };
         })
         .filter(space => space.code && space.pricePerHour); // Filtrar espacios válidos
-      
+
       console.log('Available spaces loaded:', this.availableSpaces.length);
     });
   }
@@ -134,22 +134,43 @@ export class IngresoPage implements OnInit {
   async cancelarReserva() {
     if (!this.selectedReservation) return;
 
-    await updateDoc(doc(this.firestore, 'reservations', this.selectedReservation.id), {
-      status: 'cancelled'
-    });
+    try {
+      // 1) Marcar reserva como cancelada
+      await updateDoc(doc(this.firestore, 'reservations', this.selectedReservation.id), {
+        status: 'cancelled'
+      });
 
-    await updateDoc(doc(this.firestore, 'spaces', this.selectedReservation.space), {
-      status: 'Available'
-    });
+      // 2) Liberar espacio: preferir spaceId, si no existe buscar por code
+      if (this.selectedReservation.spaceId) {
+        await updateDoc(doc(this.firestore, 'spaces', this.selectedReservation.spaceId), {
+          status: 'Available'
+        });
+      } else if (this.selectedReservation.space) {
+        const spacesRef = collection(this.firestore, 'spaces');
+        const q = query(spacesRef, where('code', '==', this.selectedReservation.space));
+        const snap = await getDocs(q);
+        for (const s of snap.docs) {
+          await updateDoc(s.ref, { status: 'Available' });
+        }
+      }
 
-    const toast = document.createElement('ion-toast');
-    toast.message = '❌ Reservation cancelled';
-    toast.color = 'danger';
-    toast.duration = 2000;
-    document.body.appendChild(toast);
-    toast.present();
+      const toast = document.createElement('ion-toast');
+      toast.message = '❌ Reservation cancelled';
+      toast.color = 'danger';
+      toast.duration = 2000;
+      document.body.appendChild(toast);
+      toast.present();
 
-    this.closeReservationModal();
+      this.closeReservationModal();
+    } catch (error) {
+      console.error('Error cancelling reservation:', error);
+      const toast = document.createElement('ion-toast');
+      toast.message = '❌ Error cancelling reservation';
+      toast.color = 'danger';
+      toast.duration = 3000;
+      document.body.appendChild(toast);
+      toast.present();
+    }
   }
 
   // ----------------------------------
@@ -158,7 +179,7 @@ export class IngresoPage implements OnInit {
   openManualEntryModal() {
     console.log('Opening manual entry modal...');
     console.log('Available spaces:', this.availableSpaces);
-    
+
     // Resetear el objeto
     this.manualEntry = {
       vehicleType: '',
@@ -166,10 +187,10 @@ export class IngresoPage implements OnInit {
       model: '',
       spaceCode: ''
     };
-    
+
     this.showManualEntryModal = true;
     this.cdr.detectChanges();
-    
+
     // Forzar otra detección después de un momento
     setTimeout(() => {
       this.cdr.detectChanges();
@@ -194,7 +215,7 @@ export class IngresoPage implements OnInit {
   // ----------------------------------
   async createManualEntry() {
     console.log('Creating manual entry with data:', this.manualEntry);
-    
+
     if (!this.manualEntry.vehicleType || !this.manualEntry.plate || !this.manualEntry.model || !this.manualEntry.spaceCode) {
       const toast = document.createElement('ion-toast');
       toast.message = '⚠️ Please fill all fields';

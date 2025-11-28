@@ -69,7 +69,7 @@ export class Auth {
         email,
         password
       );
-      console.log('User logged in successfully:', response);
+      console.log('User logged in successfully');
     } catch (error: any) {
       console.error('Error logging in user:', error.message);
       let errorMessage = 'Login failed';

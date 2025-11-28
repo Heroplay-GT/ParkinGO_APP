@@ -1,1 +1,212 @@
-.ingreso-page{--background:#0b1416;color:#eaeaea;font-family:'Poppins',sans-serif}.header{text-align:center;padding:25px 15px}.header h1{font-size:1.9rem;font-weight:700;color:#00ffc6;text-shadow:0 0 10px rgba(0,255,198,.4)}.header p{margin-top:-6px;color:#b6c2c2;opacity:.85}ion-button{margin:15px;border-radius:14px;font-weight:600;--background:linear-gradient(135deg,rgba(0,255,198,.15),rgba(0,255,198,.08));--color:#00ffc6;--border-color:#00ffc6;--border-width:2px;box-shadow:0 0 12px rgba(0,255,198,.3)}ion-button:hover{transform:scale(1.03);box-shadow:0 0 20px rgba(0,255,198,.5)}ion-button::part(native){background:transparent!important;box-shadow:none!important}.section-title{padding-left:20px;margin-top:30px;font-size:1.3rem;color:#00ffc6;font-weight:600}ion-list{background:transparent}ion-item{--background:rgba(255,255,255,.05);border-radius:18px;margin:14px 18px;padding:10px;border:1px solid rgba(255,255,255,.3);box-shadow:0 0 8px rgba(255,255,255,.08);transition:.25s ease}ion-item:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.6)}ion-item ion-icon[slot="start"]{font-size:34px;color:#00ffc6}ion-item ion-label h2{font-size:1.1rem;font-weight:600;color:#fff}ion-item ion-label p{font-size:.9rem;color:#b0b0b0}.search-box{padding:0 20px;margin-bottom:15px}.search-box ion-item{--background:rgba(255,255,255,.06);border-radius:14px}.search-box ion-input{color:#eaeaea}.actions-row{display:flex;flex-direction:column;align-items:center;gap:12px;padding:0 20px;margin:15px 0}.actions-row ion-button{width:100%;max-width:350px;height:48px;--box-shadow:none}.actions-row .scan-btn{--background:linear-gradient(135deg,rgba(0,255,198,.15),rgba(0,255,198,.08));--color:#00ffc6;--border-color:#00ffc6;--border-width:2px;border-radius:12px;font-weight:600;font-size:0.9rem}.actions-row .scan-btn ion-icon{font-size:20px;color:#00ffc6}.actions-row .manual-btn{--background:linear-gradient(135deg,rgba(0,255,198,.15),rgba(0,255,198,.08));--color:#00ffc6;--border-color:#00ffc6;--border-width:2px;border-radius:12px;font-weight:600;font-size:0.85rem}.actions-row .manual-btn ion-icon{color:#00ffc6;font-size:18px}.actions-row .scan-btn:hover,.actions-row .manual-btn:hover{transform:translateY(-2px);box-shadow:0 0 18px rgba(0,255,198,.5)}.floating-refresh{position:fixed;bottom:90px;right:20px;width:62px;height:62px;border-radius:50%;border:2px solid #00ffc6;background:transparent;display:flex;justify-content:center;align-items:center;box-shadow:0 0 14px rgba(0,255,198,.45);backdrop-filter:blur(6px);cursor:pointer;transition:.25s ease-in-out;z-index:9999}.floating-refresh ion-icon{font-size:28px;color:#00ffc6}.floating-refresh:hover{transform:scale(1.12);box-shadow:0 0 22px rgba(0,255,198,.8)}ion-modal{--background:#0b1416}ion-modal ion-header ion-toolbar{--background:rgba(11,20,22,0.95);--color:#00ffc6;border-bottom:1px solid rgba(0,255,198,.3)}ion-modal ion-header ion-toolbar ion-title{color:#00ffc6;font-weight:600}ion-modal ion-header ion-toolbar ion-button{--color:#00ffc6}ion-modal ion-content.modal-content{--background:#0b1416}ion-modal ion-content.modal-content .vehicle-selector{display:flex;gap:10px;margin-bottom:20px;padding:0 10px}ion-modal ion-content.modal-content .vehicle-selector .vehicle-btn{flex:1;background:rgba(255,255,255,.05);border:2px solid rgba(0,255,198,.2);border-radius:12px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;color:#8b8b8b}ion-modal ion-content.modal-content .vehicle-selector .vehicle-btn ion-icon{font-size:28px}ion-modal ion-content.modal-content .vehicle-selector .vehicle-btn.active{background:rgba(0,255,198,.15);border-color:#00ffc6;color:#00ffc6;box-shadow:0 0 15px rgba(0,255,198,.3)}ion-modal ion-content.modal-content ion-list{padding:0;margin-bottom:20px}ion-modal ion-content.modal-content ion-item{--background:rgba(255,255,255,.05);margin-bottom:16px;border:1px solid rgba(0,255,198,.2)}ion-modal ion-content.modal-content ion-item ion-label{color:#00ffc6!important;font-size:.85rem}ion-modal ion-content.modal-content ion-item ion-input{--color:#eaeaea;--placeholder-color:#8b8b8b}ion-modal ion-content.modal-content .spaces-section{margin:20px 0}ion-modal ion-content.modal-content .spaces-section .section-subtitle{color:#00ffc6;font-size:1rem;font-weight:600;margin-bottom:15px;text-align:center}ion-modal ion-content.modal-content .parking-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:0 5px}ion-modal ion-content.modal-content .parking-slot{aspect-ratio:1.5;background:rgba(255,255,255,.08);border:2px solid rgba(0,255,198,.3);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}ion-modal ion-content.modal-content .parking-slot.selected{background:rgba(0,255,198,.25);border-color:#00ffc6;border-width:3px;transform:scale(1.05)}ion-modal ion-content.modal-content .parking-slot .slot-number{font-size:1.5rem;font-weight:700;color:#00ffc6}ion-modal ion-content.modal-content .parking-slot .slot-price{font-size:.7rem;color:#8b8b8b}ion-modal ion-content.modal-content .parking-slot:hover:not(.selected){transform:translateY(-4px);border-color:#00ffc6}ion-modal ion-content.modal-content ion-button[color="success"]{--background:linear-gradient(90deg,#00ffc6,#00bfa5);--color:#0b1416;margin-top:20px;border-radius:30px;font-weight:700}
+/* 🌙 FONDO GENERAL */
+.ingreso-page {
+  --background: #0b1416;
+  color: #eaeaea;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ==== HEADER ==== */
+.header {
+  text-align: center;
+  padding: 25px 15px;
+}
+
+.header h1 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #00ffc6;
+  text-shadow: 0 0 10px rgba(0, 255, 198, .4);
+}
+
+.header p {
+  margin-top: -6px;
+  color: #b6c2c2;
+  opacity: .85;
+}
+
+/* ==== BOTONES SUPERIORES ==== */
+.actions-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 20px;
+}
+
+.actions-row ion-button {
+  width: 100%;
+  max-width: 340px;
+  height: 50px;
+  border-radius: 14px;
+  font-weight: 600;
+
+  --background: rgba(0, 255, 198, .1);
+  --border-color: #00ffc6;
+  --border-width: 2px;
+  --color: #00ffc6;
+  box-shadow: 0 0 12px rgba(0, 255, 198, .3);
+}
+
+.actions-row ion-button:hover {
+  transform: scale(1.03);
+}
+
+/* ==== SEARCH BAR DARK ==== */
+.search-box {
+  padding: 0 20px;
+  margin-top: 10px;
+}
+
+.search-box ion-item {
+  --background: rgba(0, 255, 198, 0.07);
+  --border-radius: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 255, 198, .25);
+
+  box-shadow: 0 0 12px rgba(0, 255, 198, 0.15);
+  padding: 4px 8px;
+}
+
+.search-box ion-input {
+  --placeholder-color: #5adfbe;
+  color: #e2fff7;
+}
+
+.search-box ion-icon {
+  color: #00ffc6;
+  font-size: 22px;
+}
+
+/* ==== LISTA DE RESERVAS ==== */
+ion-list {
+  background: transparent !important;
+  padding: 10px 12px;
+}
+
+ion-item {
+  --background: rgba(0, 255, 198, 0.06);
+  border-radius: 14px;
+  margin-bottom: 15px;
+  border: 1px solid rgba(0, 255, 198, .2);
+  box-shadow: 0 0 10px rgba(0, 255, 198, .15);
+
+  transition: .2s ease;
+}
+
+ion-item:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 255, 198, .5);
+}
+
+ion-item h2 {
+  color: #00ffc6;
+  font-weight: 700;
+}
+
+ion-item p {
+  color: #96cfc3;
+}
+
+ion-item ion-icon[slot="start"] {
+  font-size: 34px;
+  color: #00ffc6;
+}
+
+/* ==== BOTÓN REFRESCAR ==== */
+.floating-refresh {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: 2px solid #00ffc6;
+  background: rgba(0, 255, 198, 0.08);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 14px rgba(0, 255, 198, .45);
+  transition: .25s ease-in-out;
+  z-index: 9999;
+}
+
+.floating-refresh ion-icon {
+  font-size: 28px;
+  color: #00ffc6;
+}
+
+.floating-refresh:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 22px rgba(0, 255, 198, .8);
+}
+
+/* ==== MODALES DARK ==== */
+
+ion-modal {
+  --background: #0b1416 !important;
+}
+
+ion-modal ion-toolbar {
+  --background: rgba(0, 255, 198, 0.10);
+  --color: #00ffc6;
+  border-bottom: 1px solid rgba(0, 255, 198, .3);
+}
+
+.modal-content {
+  --background: #0b1416;
+}
+
+/* ==== SELECTOR DE VEHÍCULO ==== */
+.vehicle-selector {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.vehicle-btn {
+  flex: 1;
+  background: rgba(0, 255, 198, .10);
+  border: 2px solid rgba(0, 255, 198, .25);
+  border-radius: 12px;
+  padding: 12px 8px;
+  color: #8b8b8b;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.vehicle-btn.active {
+  background: rgba(0, 255, 198, .20);
+  border-color: #00ffc6;
+  box-shadow: 0 0 15px rgba(0, 255, 198, .3);
+  color: #00ffc6;
+}
+
+/* ==== CAMPOS ==== */
+ion-item {
+  --background: rgba(255, 255, 255, .05);
+}
+
+ion-item ion-label {
+  color: #00ffc6 !important;
+}
+
+ion-input {
+  --color: #eaeaea !important;
+}
+
+/* ==== GRID DE ESPACIOS ==== */
+
+.parking-slot {
+  background: rgba(0, 255, 198, 0.08);
+  border: 1.5px solid rgba(0, 255, 198, .25);
+  border-radius: 14px;
+  padding: 14px 10px;
+}
+
+.parking-slot.selected {
+  background: rgba(0, 255, 198, 0.25);
+  border-color: #00ffc6;
+}
